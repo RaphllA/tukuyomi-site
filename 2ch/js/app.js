@@ -324,8 +324,57 @@ class App {
       });
   }
 
+  parseLegacyCreateRequest(urlParams) {
+    if (!(urlParams instanceof URLSearchParams)) return null;
+
+    // Legacy fallback: native GET submit from thread form produced ?id=&title=&subtitle=
+    const id = safeThreadId(normalizeThreadIdentifier(urlParams.get('id')));
+    const hasTitleParam = urlParams.has('title');
+    const titleText = String(urlParams.get('title') || '').trim();
+    const subtitleText = String(urlParams.get('subtitle') || '').trim();
+
+    if (!id || !hasTitleParam || !titleText) return null;
+    return { id, titleText, subtitleText };
+  }
+
+  applyLegacyCreateRequest(request) {
+    if (!request || !request.id) return;
+
+    let changed = false;
+    let thread = this.getThread(request.id);
+    if (!thread) {
+      this.state.threads.push({
+        id: request.id,
+        titleText: request.titleText,
+        subtitleText: request.subtitleText || '',
+        featured: false,
+        listDate: format2chDate(new Date()),
+        posts: [],
+        authors: {}
+      });
+      changed = true;
+      thread = this.getThread(request.id);
+    }
+
+    if (changed) {
+      this.saveState();
+    }
+
+    this.mode = 'thread';
+    this.currentThreadId = request.id;
+    this.editingPostNumber = null;
+
+    const targetUrl = `thread.html?id=${encodeURIComponent(request.id)}`;
+    try {
+      window.history.replaceState(null, '', targetUrl);
+    } catch {
+      window.location.href = targetUrl;
+    }
+  }
+
   async init() {
     const urlParams = new URLSearchParams(window.location.search);
+    const legacyCreateRequest = this.parseLegacyCreateRequest(urlParams);
     const threadId = normalizeThreadIdentifier(urlParams.get('id'));
 
     if (threadId) {
@@ -342,6 +391,9 @@ class App {
     this.container.innerHTML = `<p>Loading data...</p>`;
     const defaultState = await this.seedFromFiles();
     this.state = await this.loadState(defaultState);
+    if (legacyCreateRequest) {
+      this.applyLegacyCreateRequest(legacyCreateRequest);
+    }
 
     this.bindEvents();
     this.render();
