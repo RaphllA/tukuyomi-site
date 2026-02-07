@@ -2038,6 +2038,7 @@ const I18N = {
         addAccount: '新增账户',
         importData: '导入数据',
         exportData: '导出数据',
+        submitToCommunity: '投稿',
         language: '语言',
         sortByPost: '按发帖顺序',
         sortByDate: '按日期',
@@ -2100,6 +2101,7 @@ const I18N = {
         addAccount: 'アカウント追加',
         importData: 'データ読込',
         exportData: 'データ書出',
+        submitToCommunity: '投稿',
         language: '言語',
         sortByPost: '投稿順',
         sortByDate: '日付順',
@@ -2292,6 +2294,7 @@ function applyLocale() {
     setText('#sidebar-account-manager-label', t('accountManager'));
     setText('#sidebar-import-label', t('importData'));
     setText('#sidebar-export-label', t('exportData'));
+    setText('#sidebar-submit-label', t('submitToCommunity'));
     setText('#sidebar-export-html-label', t('exportHtml'));
     setText('#sidebar-mode-label', appMode === 'view' ? t('modeView') : t('modeEdit'));
     setText('#sidebar-locale-label', t('language'));
@@ -2388,6 +2391,10 @@ function ensureTopTools() {
                 <svg viewBox="0 0 24 24"><path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"/></svg>
                 <span id="sidebar-export-label"></span>
             </button>
+            <button id="sidebar-submit-btn" class="sidebar-tool-btn" type="button">
+                <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+                <span id="sidebar-submit-label"></span>
+            </button>
             <button id="sidebar-export-html-btn" class="sidebar-tool-btn editor-only" type="button">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
                 <span id="sidebar-export-html-label"></span>
@@ -2455,6 +2462,12 @@ function ensureTopTools() {
     if (exportBtn && !exportBtn.dataset.bound) {
         exportBtn.dataset.bound = '1';
         exportBtn.onclick = exportData;
+    }
+
+    const submitBtn = document.getElementById('sidebar-submit-btn');
+    if (submitBtn && !submitBtn.dataset.bound) {
+        submitBtn.dataset.bound = '1';
+        submitBtn.onclick = openCommunitySubmissionModal;
     }
 
     const exportHtmlBtn = document.getElementById('sidebar-export-html-btn');
@@ -3100,6 +3113,140 @@ exportData = function () {
     a.click();
     URL.revokeObjectURL(url);
 };
+
+function getSubmissionConfig() {
+    const cfg = (window.APP_SUBMISSION_CONFIG && typeof window.APP_SUBMISSION_CONFIG === 'object')
+        ? window.APP_SUBMISSION_CONFIG
+        : {};
+    const endpoint = typeof cfg.endpoint === 'string' && cfg.endpoint.trim() ? cfg.endpoint.trim() : '/api/submissions';
+    const projectKey = typeof cfg.projectKey === 'string' ? cfg.projectKey.trim() : '';
+    return { endpoint, projectKey };
+}
+
+function ensureCommunitySubmissionModal() {
+    if (document.getElementById('community-submission-modal')) return;
+
+    const modal = document.createElement('div');
+    modal.id = 'community-submission-modal';
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>投稿到社区</h3>
+            <div class="modal-field">
+                <label class="modal-label" for="community-submission-author">署名（可选）</label>
+                <input id="community-submission-author" type="text" autocomplete="nickname" placeholder="显示名" />
+            </div>
+            <div class="modal-field">
+                <label class="modal-label" for="community-submission-contact">联系方式（可选）</label>
+                <input id="community-submission-contact" type="text" autocomplete="email" placeholder="Email / 其他" />
+            </div>
+            <label class="modal-check-option">
+                <input type="checkbox" id="community-submission-show-author" checked />
+                <span>在内容中展示署名</span>
+            </label>
+            <div class="modal-field">
+                <label class="modal-label" for="community-submission-note">备注（可选）</label>
+                <textarea id="community-submission-note" placeholder="补充说明 / 注意事项"></textarea>
+            </div>
+            <div id="community-submission-status" class="modal-hint" aria-live="polite"></div>
+            <div class="modal-actions">
+                <button id="community-submission-cancel" type="button">取消</button>
+                <button id="community-submission-send" type="button">提交</button>
+            </div>
+        </div>
+    `;
+
+    modal.addEventListener('click', (e) => {
+        if (e.target && e.target.id === 'community-submission-modal') {
+            closeCommunitySubmissionModal();
+        }
+    });
+
+    document.body.appendChild(modal);
+
+    const cancelBtn = document.getElementById('community-submission-cancel');
+    if (cancelBtn) cancelBtn.onclick = closeCommunitySubmissionModal;
+
+    const sendBtn = document.getElementById('community-submission-send');
+    if (sendBtn) sendBtn.onclick = submitCommunitySubmission;
+}
+
+function openCommunitySubmissionModal() {
+    ensureCommunitySubmissionModal();
+    document.getElementById('community-submission-status').textContent = '';
+    document.getElementById('community-submission-modal').classList.add('active');
+}
+
+function closeCommunitySubmissionModal() {
+    document.getElementById('community-submission-modal')?.classList.remove('active');
+}
+
+function setCommunitySubmissionStatus(text) {
+    const el = document.getElementById('community-submission-status');
+    if (!el) return;
+    el.textContent = text || '';
+}
+
+function buildProjectExportPayload() {
+    return {
+        schemaVersion: 3,
+        exportedAt: new Date().toISOString(),
+        tweets: currentData,
+        accounts: getAccounts(),
+        ui: getUIState(),
+        locale: getLocale()
+    };
+}
+
+async function submitCommunitySubmission() {
+    const { endpoint, projectKey } = getSubmissionConfig();
+
+    const authorDisplayName = (document.getElementById('community-submission-author')?.value || '').trim();
+    const authorContact = (document.getElementById('community-submission-contact')?.value || '').trim();
+    const showAuthorOnContent = Boolean(document.getElementById('community-submission-show-author')?.checked);
+    const note = (document.getElementById('community-submission-note')?.value || '').trim();
+
+    const sendBtn = document.getElementById('community-submission-send');
+    if (sendBtn) {
+        sendBtn.disabled = true;
+    }
+
+    setCommunitySubmissionStatus('提交中...');
+
+    try {
+        const body = {
+            schemaVersion: 1,
+            source: 'twitter',
+            projectKey: projectKey || undefined,
+            payload: buildProjectExportPayload(),
+            authorDisplayName: authorDisplayName || undefined,
+            authorContact: authorContact || undefined,
+            showAuthorOnContent,
+            note: note || undefined
+        };
+
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+            setCommunitySubmissionStatus(`提交失败：${data.error || res.status}`);
+            return;
+        }
+
+        setCommunitySubmissionStatus(`提交成功（等待审核），ID: ${data.id}`);
+    } catch (err) {
+        console.warn('Submission failed:', err);
+        setCommunitySubmissionStatus('提交失败：网络错误，请稍后重试。');
+    } finally {
+        if (sendBtn) {
+            sendBtn.disabled = false;
+        }
+    }
+}
 
 importData = function () {
     const input = document.createElement('input');

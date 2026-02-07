@@ -1554,6 +1554,36 @@ button {
     margin-bottom: 16px;
 }
 
+.modal-content input[type="text"],
+.modal-content input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.modal-field {
+    margin-bottom: 6px;
+}
+
+.modal-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.modal-hint {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
 .modal-content textarea {
     width: 100%;
     min-height: 150px;
