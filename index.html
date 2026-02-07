@@ -1,0 +1,479 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>月読 Tsukuyomi</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23ffd700' d='M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z'/></svg>">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- ???? -->
+        <nav class="left-sidebar">
+            <div class="nav-content">
+                <a href="#" class="nav-logo">
+                    <svg viewBox="0 0 24 24" class="moon-logo">
+                        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+                    </svg>
+                </a>
+                <a href="#" class="nav-item active">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M21.591 7.146L12.52 1.157c-.316-.21-.724-.21-1.04 0l-9.071 5.99c-.26.173-.409.456-.409.757v13.183c0 .502.418.913.929.913h6.638c.511 0 .929-.41.929-.913v-7.075h3.008v7.075c0 .502.418.913.929.913h6.638c.511 0 .929-.41.929-.913V7.904c0-.301-.158-.584-.409-.758zM20 20l-4.5.01.011-7.097c0-.502-.418-.913-.929-.913H9.44c-.511 0-.929.41-.929.913L8.5 20H4V8.773l8-5.27 8 5.27V20z" />
+                    </svg>
+                    <span>主页</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-explore">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z" />
+                    </svg>
+                    <span>探索</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-notifications">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.864 16H5.134z" />
+                    </svg>
+                    <span>通知</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z" />
+                    </svg>
+                    <span>聊天</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M7.5 3.5C6.67 3.5 6 4.17 6 5s.67 1.5 1.5 1.5S9 5.83 9 5s-.67-1.5-1.5-1.5zM6 8c-.55 0-1 .45-1 1v8H3V9c0-1.66 1.34-3 3-3 .6 0 1.16.18 1.63.49l4.88 3.25-1.11 1.66L6.74 8.2C6.53 8.07 6.27 8 6 8zm11.73 4.25l-4.88-3.25 1.11-1.66L18.62 10.58c.21.13.47.2.74.2.55 0 1-.45 1-1V2h2v7.68c0 1.66-1.34 3-3 3-.6 0-1.16-.18-1.63-.49zM16.5 6.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S15 4.17 15 5s.67 1.5 1.5 1.5zM21 19.68c0 1.66-1.34 3-3 3-.6 0-1.16-.18-1.63-.49l-4.88-3.25 1.11-1.66 4.66 3.14c.21.13.47.2.74.2.55 0 1-.45 1-1V12h2v7.68zM8.27 15.75l4.88 3.25-1.11 1.66-4.66-3.14c-.21-.13-.47-.2-.74-.2-.55 0-1 .45-1 1V22H4v-7.68c0-1.66 1.34-3 3-3 .6 0 1.16.18 1.63.49l-.36-.06z" />
+                    </svg>
+                    <span>ヤチヨ</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z" />
+                    </svg>
+                    <span>书签</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M7.501 19.917L7.471 21H.472l.029-1.027c.184-6.618 3.736-8.977 7-8.977.963 0 1.95.212 2.87.672-.761.557-1.408 1.267-1.862 2.085-.567-.157-1.224-.257-1.908-.257-1.957 0-4.152.924-4.6 5.421h4.606l-.106.004zM10.996 15c-1.52 0-2.762-1.243-2.762-2.762 0-1.52 1.243-2.762 2.762-2.762s2.762 1.243 2.762 2.762c0 1.52-1.243 2.762-2.762 2.762zm0-2c.421 0 .762-.341.762-.762 0-.421-.341-.762-.762-.762s-.762.341-.762.762c0 .421.341.762.762.762zm-6.49-4.486c-1.794 0-3.252-1.458-3.252-3.252S2.712 2.01 4.506 2.01s3.252 1.458 3.252 3.252-1.458 3.252-3.252 3.252zm0-2c.691 0 1.252-.56 1.252-1.252s-.56-1.252-1.252-1.252-1.252.56-1.252 1.252.56 1.252 1.252 1.252zM19.498 21h-7.995c-.274 0-.497-.224-.497-.5 0-2.761 2.238-5 5-5s5 2.239 5 5c0 .276-.223.5-.497.5h-.011zm-7.428-1h6.891c-.24-1.722-1.707-3.053-3.461-3.053s-3.221 1.331-3.43 3.053zM16.01 14.005c-1.795 0-3.252-1.458-3.252-3.253S14.214 7.5 16.01 7.5s3.252 1.458 3.252 3.252-1.458 3.253-3.252 3.253zm0-2c.691 0 1.252-.561 1.252-1.253S16.7 9.5 16.009 9.5s-1.252.56-1.252 1.252.56 1.253 1.252 1.253z" />
+                    </svg>
+                    <span>创作者工作室</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24" class="tsukuyomi-premium-icon">
+                        <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="18"
+                            font-weight="bold" fill="currentColor">T</text>
+                    </svg>
+                    <span>Premium</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M5.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C15.318 13.65 13.838 13 12 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM12 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z" />
+                    </svg>
+                    <span>个人资料</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-more">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M3.75 12c0-4.56 3.69-8.25 8.25-8.25s8.25 3.69 8.25 8.25-3.69 8.25-8.25 8.25S3.75 16.56 3.75 12zM12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zM8.25 12c0-.41.34-.75.75-.75h6c.41 0 .75.34.75.75s-.34.75-.75.75H9c-.41 0-.75-.34-.75-.75z" />
+                    </svg>
+                    <span>更多</span>
+                </a>
+                <button class="post-btn">发帖</button>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar editable-avatar" data-field="sidebar-avatar">
+                    <div class="avatar-placeholder">?</div>
+                </div>
+                <div class="user-info">
+                    <span class="user-display-name editable" data-field="sidebar-name">色々</span>
+                    <span class="user-handle editable" data-field="sidebar-handle">@nihoheYCY</span>
+                </div>
+                <svg class="more-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" />
+                </svg>
+            </div>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- Timeline 视图 -->
+            <div id="timeline-view" class="view active">
+                <header class="main-header">
+                    <h1>主页</h1>
+                    <div class="header-actions">
+                        <button class="header-btn editor-only" onclick="exportData()" title="导出数据">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z" />
+                            </svg>
+                        </button>
+                        <button class="header-btn editor-only" onclick="importData()" title="导入数据">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 21.41l-5.7-5.7 1.41-1.42L11 17.59V8h2v9.59l3.29-3.3 1.41 1.42-5.7 5.7zM3 7V3.5C3 2.12 4.12 1 5.5 1h13C19.88 1 21 2.12 21 3.5V7h-2V3.5c0-.28-.22-.5-.5-.5H5.5c-.28 0-.5.22-.5.5V7H3z" />
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+                <div class="timeline-tabs">
+                    <button class="tab active">为你推荐</button>
+                    <button class="tab">正在关注</button>
+                </div>
+                <!-- ?????? -->
+                <div class="compose-box">
+                    <div class="compose-content">
+                        <div class="user-avatar editable-avatar" data-field="compose-avatar">
+                            <div class="avatar-placeholder">?</div>
+                        </div>
+                        <div class="compose-input-area">
+                            <div class="compose-input editable" data-field="compose-placeholder"
+                                contenteditable="false">有什么新鲜事？</div>
+                            <div class="compose-tools">
+                                <div class="compose-icons">
+                                    <!-- 图片 -->
+                                    <button class="compose-icon" title="图片">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M3 5.5C3 4.119 4.119 3 5.5 3h13C19.881 3 21 4.119 21 5.5v13c0 1.381-1.119 2.5-2.5 2.5h-13C4.119 21 3 19.881 3 18.5v-13zM5.5 5c-.276 0-.5.224-.5.5v9.086l3-3 3 3 5-5 3 3V5.5c0-.276-.224-.5-.5-.5h-13zM19 15.414l-3-3-5 5-3-3-3 3V18.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-3.086zM9.75 7C8.784 7 8 7.784 8 8.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75S10.716 7 9.75 7z" />
+                                        </svg>
+                                    </button>
+                                    <!-- GIF -->
+                                    <button class="compose-icon" title="GIF">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M3 5.5C3 4.119 4.12 3 5.5 3h13C19.88 3 21 4.119 21 5.5v13c0 1.381-1.12 2.5-2.5 2.5h-13C4.12 21 3 19.881 3 18.5v-13zM5.5 5c-.28 0-.5.224-.5.5v13c0 .276.22.5.5.5h13c.28 0 .5-.224.5-.5v-13c0-.276-.22-.5-.5-.5h-13zM18 10.711V9.25h-3.74v5.5h1.44v-1.719h1.7V11.57h-1.7v-.859H18zM11.79 9.25h1.44v5.5h-1.44v-5.5zm-3.07 1.375c.34 0 .77.172 1.02.43l1.03-.86c-.51-.601-1.28-.945-2.05-.945C7.19 9.25 6 10.453 6 12s1.19 2.75 2.72 2.75c.85 0 1.54-.344 2.05-.945v-2.149H8.38v1.032H9.4v.515c-.17.086-.42.172-.68.172-.76 0-1.36-.602-1.36-1.375 0-.688.6-1.375 1.36-1.375z" />
+                                        </svg>
+                                    </button>
+                                    <!-- 投票 -->
+                                    <button class="compose-icon" title="投票">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M6 5c-1.1 0-2 .895-2 2s.9 2 2 2 2-.895 2-2-.9-2-2-2zM2 7c0-2.209 1.79-4 4-4s4 1.791 4 4-1.79 4-4 4-4-1.791-4-4zm20 1H12V6h10v2zm-10 4h10v2H12v-2zm-2 4c0-1.105-.9-2-2-2s-2 .895-2 2 .9 2 2 2 2-.895 2-2zm-2-4c2.21 0 4 1.791 4 4s-1.79 4-4 4-4-1.791-4-4 1.79-4 4-4zm12 6h-8v-2h8v2z" />
+                                        </svg>
+                                    </button>
+                                    <!-- 表情 -->
+                                    <button class="compose-icon" title="表情">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M8 9.5C8 8.119 8.672 7 9.5 7S11 8.119 11 9.5 10.328 12 9.5 12 8 10.881 8 9.5zm6.5 2.5c.828 0 1.5-1.119 1.5-2.5S15.328 7 14.5 7 13 8.119 13 9.5s.672 2.5 1.5 2.5zM12 16c-2.224 0-3.021-2.227-3.051-2.316l-1.897.633c.05.15 1.271 3.684 4.949 3.684s4.898-3.533 4.949-3.684l-1.896-.638c-.033.095-.83 2.322-3.053 2.322zm10.25-4.001c0 5.652-4.598 10.25-10.25 10.25S1.75 17.652 1.75 12 6.348 1.75 12 1.75 22.25 6.348 22.25 12zm-2 0c0-4.549-3.701-8.25-8.25-8.25S3.75 7.451 3.75 12s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25z" />
+                                        </svg>
+                                    </button>
+                                    <!-- 日程 -->
+                                    <button class="compose-icon" title="日程">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M6 3V2h2v1h6V2h2v1h1.5C18.88 3 20 4.119 20 5.5v2h-2v-2c0-.276-.22-.5-.5-.5H17v1h-2V5H7v1H5V5h-.5c-.28 0-.5.224-.5.5v12c0 .276.22.5.5.5h3v2h-3C3.12 20 2 18.881 2 17.5v-12C2 4.119 3.12 3 4.5 3H6zm9.5 8c-2.49 0-4.5 2.015-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.015 4.5-4.5-2.01-4.5-4.5-4.5zM9 15.5C9 11.91 11.91 9 15.5 9s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5S9 19.09 9 15.5zm5.5-2.5h2v2.086l1.71 1.707-1.42 1.414-2.29-2.293V13z" />
+                                        </svg>
+                                    </button>
+                                    <!-- 位置 -->
+                                    <button class="compose-icon" title="位置">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 7c-1.93 0-3.5 1.57-3.5 3.5S10.07 14 12 14s3.5-1.57 3.5-3.5S13.93 7 12 7zm0 5c-.827 0-1.5-.673-1.5-1.5S11.173 9 12 9s1.5.673 1.5 1.5S12.827 12 12 12zm0-10c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 17.77c-1.665-1.241-6.5-5.196-6.5-9.27C5.5 6.916 8.416 4 12 4s6.5 2.916 6.5 6.5c0 4.073-4.835 8.028-6.5 9.27z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button class="compose-submit-btn">发帖</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="timeline-posts" class="posts-container">
+                    <!-- ???? JS ???? -->
+                </div>
+            </div>
+
+
+            <!-- 推文详情视图 -->
+            <div id="tweet-detail-view" class="view">
+                <header class="main-header">
+                    <button class="back-btn" onclick="showTimeline()">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z" />
+                        </svg>
+                    </button>
+                    <h1>帖子</h1>
+                </header>
+                <div id="tweet-detail-content">
+                    <!-- ?????? JS ???? -->
+                </div>
+            </div>
+
+            <div id="account-view" class="view">
+                <header class="main-header">
+                    <button class="back-btn" onclick="showTimeline()">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z" />
+                        </svg>
+                    </button>
+                    <h1>账户资料</h1>
+                </header>
+                <div id="account-content"></div>
+            </div>
+        </main>
+
+        <!-- 右侧边栏 -->
+        <aside class="right-sidebar">
+            <div class="search-box">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z" />
+                </svg>
+                <input type="text" placeholder="搜索">
+            </div>
+
+            <!-- 订阅 ツクヨミ Premium -->
+            <div class="sidebar-section premium-section">
+                <h2>订阅 ツクヨミ Premium</h2>
+                <p class="premium-desc">订阅以解锁新功能，享受ツクヨミ世界的完整体验。</p>
+                <button class="subscribe-btn">订阅</button>
+            </div>
+
+            <!-- 有什么新鲜事 -->
+            <div class="sidebar-section trending">
+                <h2>有什么新鲜事</h2>
+                <div class="trend-item">
+                    <div class="trend-info">
+                        <span class="trend-category editable" data-field="trend-cat-1">日本 的趋势</span>
+                        <span class="trend-name editable" data-field="trend-1">ヤチヨ三人ライブ</span>
+                        <span class="trend-translation">八千代三人联合Live</span>
+                    </div>
+                    <button class="trend-more">···</button>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-info">
+                        <span class="trend-category editable" data-field="trend-cat-2">东京 的趋势</span>
+                        <span class="trend-name editable" data-field="trend-2">かぐや復帰</span>
+                        <span class="trend-translation">辉夜复出</span>
+                    </div>
+                    <button class="trend-more">···</button>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-info">
+                        <span class="trend-category editable" data-field="trend-cat-3">月読 趋势</span>
+                        <span class="trend-name editable" data-field="trend-3">ヤチヨ新曲</span>
+                        <span class="trend-translation">八千代新曲</span>
+                    </div>
+                    <button class="trend-more">···</button>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-info">
+                        <span class="trend-category editable" data-field="trend-cat-4">科技 趋势</span>
+                        <span class="trend-name editable" data-field="trend-4">人型ロボット突破</span>
+                        <span class="trend-translation">人形机器人突破</span>
+                    </div>
+                    <button class="trend-more">···</button>
+                </div>
+                <a href="#" class="show-more">显示更多</a>
+            </div>
+
+            <!-- 推荐关注 -->
+            <div class="sidebar-section who-to-follow">
+                <h2>推荐关注</h2>
+                <div class="follow-card">
+                    <div class="user-avatar editable-avatar" data-field="follow-avatar-1">
+                        <div class="avatar-placeholder small">?</div>
+                    </div>
+                    <div class="follow-user-info">
+                        <div class="follow-name-row">
+                            <span class="follow-user-name editable" data-field="follow-name-1">ヤチヨ</span>
+                            <span class="verified-badge">
+                                <svg viewBox="0 0 22 22">
+                                    <path
+                                        d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <span class="follow-user-handle editable" data-field="follow-handle-1">@yachi8000</span>
+                    </div>
+                    <button class="follow-btn following">已关注</button>
+                </div>
+                <div class="follow-card">
+                    <div class="user-avatar editable-avatar" data-field="follow-avatar-2">
+                        <div class="avatar-placeholder small">?</div>
+                    </div>
+                    <div class="follow-user-info">
+                        <div class="follow-name-row">
+                            <span class="follow-user-name editable" data-field="follow-name-2">東京大学具身智能研究所</span>
+                            <span class="verified-badge">
+                                <svg viewBox="0 0 22 22">
+                                    <path
+                                        d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <span class="follow-user-handle editable" data-field="follow-handle-2">@TUEIR</span>
+                    </div>
+                    <button class="follow-btn following">已关注</button>
+                </div>
+                <div class="follow-card">
+                    <div class="user-avatar editable-avatar" data-field="follow-avatar-3">
+                        <div class="avatar-placeholder small">?</div>
+                    </div>
+                    <div class="follow-user-info">
+                        <span class="follow-user-name editable" data-field="follow-name-3">彩輝激推し</span>
+                        <span class="follow-user-handle editable" data-field="follow-handle-3">@irokaguforever</span>
+                    </div>
+                    <button class="follow-btn following">已关注</button>
+                </div>
+                <a href="#" class="show-more">显示更多</a>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="#">服务条款</a>
+                <a href="#">隐私政策</a>
+                <a href="#">Cookie 政策</a>
+                <a href="#">辅助功能</a>
+                <a href="#">广告信息</a>
+                <a href="#">更多</a>
+                <span>© 2040 Tsukuyomi Corp.</span>
+            </div>
+        </aside>
+    </div>
+
+    <div id="sidebar-tools-backdrop" class="sidebar-tools-backdrop"></div>
+    <div id="right-sidebar-backdrop" class="right-sidebar-backdrop"></div>
+
+    <!-- 图片选择器模态框 -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content">
+            <h3>选择图片</h3>
+            <input type="file" id="image-input" accept="image/*">
+            <div class="image-crop-tools">
+                <div id="crop-stage" class="crop-stage">
+                    <img id="crop-preview-image" alt="">
+                    <div id="crop-box" class="crop-box">
+                        <div class="crop-handle crop-handle-top" data-handle="top"></div>
+                        <div class="crop-handle crop-handle-right" data-handle="right"></div>
+                        <div class="crop-handle crop-handle-bottom" data-handle="bottom"></div>
+                        <div class="crop-handle crop-handle-left" data-handle="left"></div>
+                        <div id="crop-box-resize" class="crop-box-resize"></div>
+                    </div>
+                </div>
+                <div class="crop-help">拖动边中点可改长宽比，右下角可自由缩放</div>
+            </div>
+            <label id="sync-account-avatar-option-wrap" class="modal-check-option" style="display:none;">
+                <input type="checkbox" id="sync-account-avatar-option">
+                <span>同时同步为该账号头像</span>
+            </label>
+            <div class="modal-actions">
+                <button onclick="closeImageModal()">取消</button>
+                <button onclick="confirmImage()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文本编辑器模态框 -->
+    <div id="text-modal" class="modal">
+        <div class="modal-content">
+            <h3>编辑内容</h3>
+            <textarea id="text-input"></textarea>
+            <div class="modal-actions">
+                <button onclick="closeTextModal()">取消</button>
+                <button onclick="confirmText()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 同人设定说明弹窗 -->
+    <div id="story-modal" class="modal">
+        <div class="modal-content story-modal-content">
+            <h3>同人设定说明（STORY_FOR_CREATORS）</h3>
+            <div id="story-modal-body" class="story-modal-body" role="document"></div>
+            <div class="modal-actions">
+                <button onclick="closeStoryModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
+
+            const SW_URL = './sw.js';
+            const CACHE_PREFIX = 'twitter-simulator-static';
+            const CACHE_MIGRATION_KEY = 'tukuyomi-sw-cache-migrated-v2';
+            const RELOAD_GUARD_KEY = 'tukuyomi-sw-controller-reloaded';
+            let hasReloaded = false;
+
+            const reloadOnce = () => {
+                if (hasReloaded) return;
+                hasReloaded = true;
+                try {
+                    if (sessionStorage.getItem(RELOAD_GUARD_KEY) === '1') return;
+                    sessionStorage.setItem(RELOAD_GUARD_KEY, '1');
+                } catch (_) { }
+                window.location.reload();
+            };
+
+            navigator.serviceWorker.addEventListener('controllerchange', reloadOnce);
+
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register(SW_URL, { updateViaCache: 'none' });
+
+                    const activateWaitingWorker = () => {
+                        if (registration.waiting) {
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        }
+                    };
+
+                    registration.addEventListener('updatefound', () => {
+                        const installing = registration.installing;
+                        if (!installing) return;
+                        installing.addEventListener('statechange', () => {
+                            if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+                                activateWaitingWorker();
+                            }
+                        });
+                    });
+
+                    activateWaitingWorker();
+                    await registration.update();
+
+                    try {
+                        if ('caches' in window && !localStorage.getItem(CACHE_MIGRATION_KEY)) {
+                            const keys = await caches.keys();
+                            await Promise.all(
+                                keys
+                                    .filter((key) => key.startsWith(`${CACHE_PREFIX}-`))
+                                    .map((key) => caches.delete(key))
+                            );
+                            localStorage.setItem(CACHE_MIGRATION_KEY, '1');
+                            await registration.update();
+                        }
+                    } catch (cacheError) {
+                        console.warn('SW cache cleanup skipped:', cacheError);
+                    }
+                } catch (swError) {
+                    console.warn('SW registration failed:', swError);
+                }
+            });
+        })();
+    </script>
+    <script src="js/data.js"></script>
+    <script src="js/image-store.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
+
+
+

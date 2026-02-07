@@ -1,0 +1,221 @@
+/* Base Reset & Fonts */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #EFEFEF;
+    color: #000;
+    font-family: "MS PGothic", "IPAMonaPGothic", "Mona", "Sazanami Gothic", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+a {
+    color: #00E;
+    text-decoration: underline;
+}
+
+/* Container */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #EFEFEF;
+}
+
+/* Header */
+.site-header {
+    background: #EFEFEF;
+    padding: 10px;
+    border-bottom: 1px solid #CCC;
+    margin-bottom: 20px;
+}
+
+.site-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #CC0000;
+    margin: 0;
+}
+
+/* Thread List Table (Index) */
+.thread-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+.thread-table th,
+.thread-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid #CCC;
+}
+
+.thread-table th {
+    background-color: #DDD;
+    font-weight: bold;
+    color: #333;
+}
+
+.thread-table th.section-header {
+    font-size: 20px;
+    /* Larger than body text */
+    text-align: left;
+    background-color: transparent;
+    /* No background for the section header */
+    border-bottom: 2px solid #CCC;
+    padding: 10px 0;
+}
+
+.thread-table tr:hover {
+    background-color: #E0E0E0;
+}
+
+.thread-table a {
+    text-decoration: none;
+    color: #00E;
+}
+
+.thread-table a:hover {
+    text-decoration: underline;
+    color: #D00;
+}
+
+/* Thread View */
+.thread-title {
+    font-size: 32px;
+    /* Much larger */
+    color: #FF0000;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    line-height: 1.2;
+}
+
+.title-subtitle {
+    display: block;
+    color: #666;
+    font-size: 18px;
+    font-weight: normal;
+    margin-top: 5px;
+}
+
+/* Gold title for 良スレ (featured/good threads) */
+.gold-title {
+    color: #DAA520 !important;
+}
+
+.thread-table .gold-title {
+    color: #DAA520 !important;
+}
+
+.title-divider {
+    border: none;
+    border-top: 1px solid #DDD;
+    /* Subtle divider */
+    margin: 10px 0 20px 0;
+}
+
+.post {
+    margin-bottom: 20px;
+}
+
+.post-meta {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.post-number {
+    font-weight: bold;
+    color: #00E;
+    /* Blue floor number */
+}
+
+.post-name {
+    color: #008000;
+    font-weight: bold;
+}
+
+.post-date {
+    color: #666;
+}
+
+.post-uid {
+    color: #666;
+}
+
+.post-body {
+    padding-left: 40px;
+    /* Classic 2ch indentation */
+    font-size: 18px;
+    /* Slightly larger for readability */
+    word-wrap: break-word;
+    line-height: 1.6;
+}
+
+/* Special styling */
+.fake-trans {
+    border-left: 3px solid #CCC;
+    /* Slightly thinner */
+    background: transparent;
+    padding-left: 8px;
+    /* Tighter */
+    margin-top: 2px;
+    /* Minimal gap */
+    /* Closer to text - fixes "too far" */
+    font-size: 16px;
+    color: #555;
+    /* Slightly darker for contrast */
+    font-style: italic;
+    display: block;
+}
+
+.anchor-link {
+    color: #00E;
+    cursor: pointer;
+}
+
+/* 2ch-style Footer Navigation */
+.thread-footer {
+    margin-top: 30px;
+    padding: 15px 10px;
+    border-top: 1px solid #CCC;
+    text-align: left;
+}
+
+.thread-footer a {
+    color: #00C;
+    /* Purple-ish blue like 2ch */
+    text-decoration: underline;
+    margin: 0 5px;
+    /* Tighter spacing */
+    font-size: 16px;
+}
+
+.thread-footer a:hover {
+    color: #D00;
+}
+
+/* Mobile Responsive - NO SPECIAL OVERRIDES */
+/* The desktop layout is used at all widths for consistency */
+/* Only minimal adjustments for very small screens if needed */
+@media screen and (max-width: 600px) {
+
+    /* Keep everything the same as desktop, just allow natural text wrapping */
+    .container {
+        padding: 10px;
+        /* Same as desktop */
+        max-width: 100%;
+        /* NO background-color change */
+    }
+
+    .thread-title {
+        font-size: 24px;
+        /* Slightly smaller for readability on small screens */
+    }
+
+    .post-body {
+        padding-left: 20px;
+        /* Slightly less indent on small screens */
+    }
+}

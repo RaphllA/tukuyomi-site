@@ -1,0 +1,16 @@
+{
+  "name": "Twitter Simulator",
+  "short_name": "TW Sim",
+  "start_url": "./?mode=view",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

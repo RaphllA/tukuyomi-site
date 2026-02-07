@@ -1,0 +1,17 @@
+﻿# OS / Editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Node (just in case)
+node_modules/
+
+# Local test artifacts
+*.tmp

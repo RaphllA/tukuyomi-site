@@ -1,0 +1,250 @@
+:root {
+  --bg0: #0a0b10;
+  --bg1: #0f1220;
+  --card: rgba(255, 255, 255, 0.06);
+  --card2: rgba(255, 255, 255, 0.08);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+  --line: rgba(255, 255, 255, 0.12);
+  --gold: #ffd36a;
+  --gold2: #ffeaad;
+  --blue: #67b2ff;
+  --shadow: 0 18px 55px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 18% 20%, rgba(255, 211, 106, 0.13), transparent 55%),
+    radial-gradient(900px 500px at 76% 78%, rgba(103, 178, 255, 0.16), transparent 60%),
+    radial-gradient(700px 420px at 52% 48%, rgba(255, 255, 255, 0.06), transparent 62%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Source Han Serif SC", "Source Han Serif", "Noto Serif CJK SC", "Noto Serif", serif;
+  letter-spacing: 0.2px;
+}
+
+.wrap {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 48px 18px;
+}
+
+.panel {
+  width: min(980px, 100%);
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.top {
+  padding: 28px 26px 18px;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(520px 260px at 22% 20%, rgba(255, 211, 106, 0.12), transparent 60%),
+    radial-gradient(600px 280px at 72% 60%, rgba(103, 178, 255, 0.10), transparent 60%);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.moon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 32% 35%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.03) 60%, rgba(0, 0, 0, 0.18)),
+    radial-gradient(circle at 58% 58%, rgba(255, 211, 106, 0.20), transparent 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.sub {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.card {
+  position: relative;
+  display: block;
+  padding: 18px 18px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--card2), var(--card));
+  color: inherit;
+  text-decoration: none;
+  transform: translateY(6px);
+  opacity: 0;
+  animation: enter 540ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+.card:nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.card:focus-visible {
+  outline: 2px solid rgba(255, 211, 106, 0.55);
+  outline-offset: 2px;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.title {
+  margin: 10px 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.desc {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.meta {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.go span {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.go svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.9;
+}
+
+.badge {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.20);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.badge.gold {
+  border-color: rgba(255, 211, 106, 0.35);
+  background: rgba(255, 211, 106, 0.12);
+  color: var(--gold2);
+}
+
+.badge.blue {
+  border-color: rgba(103, 178, 255, 0.35);
+  background: rgba(103, 178, 255, 0.10);
+  color: rgba(203, 230, 255, 0.95);
+}
+
+.foot {
+  padding: 14px 18px 18px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.foot a {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.28);
+}
+
+.foot a:hover {
+  color: rgba(255, 255, 255, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.55);
+}
+
+@keyframes enter {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .top {
+    padding: 24px 18px 16px;
+  }
+}

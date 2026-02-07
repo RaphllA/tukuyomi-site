@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0b10" />
+    <title>Tsukuyomi Hub</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="panel" aria-label="应用入口">
+        <header class="top">
+          <div class="brand">
+            <div class="moon" aria-hidden="true"></div>
+            <div>
+              <h1>月読 Tsukuyomi</h1>
+              <p class="sub">选择入口：继续写推文，或进入 2ch 线程。</p>
+            </div>
+          </div>
+        </header>
+
+        <div class="grid">
+          <a class="card" href="../" aria-label="进入 Twitter 模拟器">
+            <div class="kicker"><span class="dot"></span><span>Application</span></div>
+            <div class="title">Twitter 模拟器</div>
+            <p class="desc">写推文，写回复，导出数据，生成快照。</p>
+            <div class="meta">
+              <span class="badge gold">/</span>
+              <span class="go">
+                <span>进入</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M9 6l6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          <a class="card" href="../2ch/" aria-label="进入 2ch 模拟器">
+            <div class="kicker"><span class="dot"></span><span>Application</span></div>
+            <div class="title">2ch 模拟器</div>
+            <p class="desc">浏览与阅读线程，跳转楼层，保持经典 2ch 风格。</p>
+            <div class="meta">
+              <span class="badge blue">/2ch/</span>
+              <span class="go">
+                <span>进入</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M9 6l6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <footer class="foot">
+          <span>Tip: 如果你从书签进入，建议固定用 `/hub/` 当入口。</span>
+          <a href="../">返回主页</a>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>
