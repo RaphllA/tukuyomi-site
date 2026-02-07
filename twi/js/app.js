@@ -27,6 +27,7 @@ let editingAccountId = null;
 let cropBoxState = { x: 0, y: 0, width: 0, height: 0 };
 let cropPointerState = null;
 const TIMELINE_SORT_KEY = 'tukuyomi-timeline-sort';
+const COMMUNITY_FEATURES_ENABLED = false;
 let composeDraftMediaIds = [];
 const replyDraftMap = new Map();
 let storyModalTextCache = null;
@@ -2316,8 +2317,6 @@ function applyLocale() {
     setText('#sidebar-account-manager-label', t('accountManager'));
     setText('#sidebar-import-label', t('importData'));
     setText('#sidebar-export-label', t('exportData'));
-    setText('#sidebar-submit-label', t('submitToCommunity'));
-    setText('#sidebar-community-label', t('communityGallery'));
     setText('#sidebar-export-html-label', t('exportHtml'));
     setText('#sidebar-mode-label', appMode === 'view' ? t('modeView') : t('modeEdit'));
     setText('#sidebar-locale-label', t('language'));
@@ -2414,14 +2413,6 @@ function ensureTopTools() {
                 <svg viewBox="0 0 24 24"><path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"/></svg>
                 <span id="sidebar-export-label"></span>
             </button>
-            <button id="sidebar-submit-btn" class="sidebar-tool-btn" type="button">
-                <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
-                <span id="sidebar-submit-label"></span>
-            </button>
-            <button id="sidebar-community-btn" class="sidebar-tool-btn" type="button">
-                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm8 0c-.33 0-.7.02-1.09.05 1.84 1.11 3.09 2.67 3.09 3.95v2h6v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span id="sidebar-community-label"></span>
-            </button>
             <button id="sidebar-export-html-btn" class="sidebar-tool-btn editor-only" type="button">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
                 <span id="sidebar-export-html-label"></span>
@@ -2445,6 +2436,11 @@ function ensureTopTools() {
     }
 
     const tools = document.getElementById('sidebar-tools');
+    if (tools) {
+        tools.querySelector('#sidebar-submit-btn')?.remove();
+        tools.querySelector('#sidebar-community-btn')?.remove();
+    }
+
     if (tools && !tools.dataset.boundAutoClose) {
         tools.dataset.boundAutoClose = '1';
         tools.addEventListener('click', (e) => {
@@ -2489,18 +2485,6 @@ function ensureTopTools() {
     if (exportBtn && !exportBtn.dataset.bound) {
         exportBtn.dataset.bound = '1';
         exportBtn.onclick = exportData;
-    }
-
-    const submitBtn = document.getElementById('sidebar-submit-btn');
-    if (submitBtn && !submitBtn.dataset.bound) {
-        submitBtn.dataset.bound = '1';
-        submitBtn.onclick = openCommunitySubmissionModal;
-    }
-
-    const communityBtn = document.getElementById('sidebar-community-btn');
-    if (communityBtn && !communityBtn.dataset.bound) {
-        communityBtn.dataset.bound = '1';
-        communityBtn.onclick = openCommunityGalleryModal;
     }
 
     const exportHtmlBtn = document.getElementById('sidebar-export-html-btn');
@@ -3205,6 +3189,10 @@ function ensureCommunitySubmissionModal() {
 }
 
 function openCommunitySubmissionModal() {
+    if (!COMMUNITY_FEATURES_ENABLED) {
+        alert('社区投稿功能暂时关闭。');
+        return;
+    }
     ensureCommunitySubmissionModal();
     document.getElementById('community-submission-status').textContent = '';
     document.getElementById('community-submission-modal').classList.add('active');
@@ -3232,6 +3220,10 @@ function buildProjectExportPayload() {
 }
 
 async function submitCommunitySubmission() {
+    if (!COMMUNITY_FEATURES_ENABLED) {
+        setCommunitySubmissionStatus('社区投稿功能暂时关闭。');
+        return;
+    }
     const { endpoint, projectKey } = getSubmissionConfig();
 
     const authorDisplayName = (document.getElementById('community-submission-author')?.value || '').trim();
@@ -3347,6 +3339,10 @@ function ensureCommunityGalleryModal() {
 }
 
 function openCommunityGalleryModal() {
+    if (!COMMUNITY_FEATURES_ENABLED) {
+        alert('社区内容功能暂时关闭。');
+        return;
+    }
     ensureCommunityGalleryModal();
     document.getElementById('community-gallery-status').textContent = '';
     document.getElementById('community-gallery-q').value = '';
@@ -3365,6 +3361,12 @@ function setCommunityGalleryStatus(text) {
 }
 
 async function refreshCommunityGallery() {
+    if (!COMMUNITY_FEATURES_ENABLED) {
+        communityGalleryAllItems = [];
+        setCommunityGalleryStatus('社区内容功能暂时关闭。');
+        renderCommunityGalleryList();
+        return;
+    }
     const { indexUrl } = getCommunityConfig();
     setCommunityGalleryStatus(t('communityGalleryLoading'));
 
@@ -3439,6 +3441,10 @@ function renderCommunityGalleryList() {
 }
 
 async function loadCommunityProject(path) {
+    if (!COMMUNITY_FEATURES_ENABLED) {
+        setCommunityGalleryStatus('社区内容功能暂时关闭。');
+        return;
+    }
     if (!confirm(t('communityGalleryLoadConfirm'))) return;
 
     setCommunityGalleryStatus(t('communityGalleryLoading'));

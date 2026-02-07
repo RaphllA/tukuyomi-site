@@ -1,15 +1,14 @@
 :root {
-  --bg0: #0a0b10;
-  --bg1: #0f1220;
-  --card: rgba(255, 255, 255, 0.06);
-  --card2: rgba(255, 255, 255, 0.08);
-  --text: rgba(255, 255, 255, 0.92);
-  --muted: rgba(255, 255, 255, 0.65);
-  --line: rgba(255, 255, 255, 0.12);
-  --gold: #ffd36a;
-  --gold2: #ffeaad;
-  --blue: #67b2ff;
-  --shadow: 0 18px 55px rgba(0, 0, 0, 0.45);
+  --bg: #f2ede2;
+  --panel: #f7f2e7;
+  --ink: #1e2433;
+  --muted: #5a647b;
+  --line: #202738;
+  --tile: #ece5d4;
+  --cyan: #18b8c8;
+  --amber: #f3a93e;
+  --lime: #8cb741;
+  --white: #ffffff;
 }
 
 * {
@@ -23,13 +22,17 @@ body {
 
 body {
   margin: 0;
-  color: var(--text);
+  color: var(--ink);
   background:
-    radial-gradient(1200px 600px at 18% 20%, rgba(255, 211, 106, 0.13), transparent 55%),
-    radial-gradient(900px 500px at 76% 78%, rgba(103, 178, 255, 0.16), transparent 60%),
-    radial-gradient(700px 420px at 52% 48%, rgba(255, 255, 255, 0.06), transparent 62%),
-    linear-gradient(180deg, var(--bg0), var(--bg1));
-  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Source Han Serif SC", "Source Han Serif", "Noto Serif CJK SC", "Noto Serif", serif;
+    linear-gradient(0deg, rgba(32, 39, 56, 0.05), rgba(32, 39, 56, 0.05)),
+    repeating-linear-gradient(
+      0deg,
+      var(--bg) 0,
+      var(--bg) 26px,
+      #ede7d9 26px,
+      #ede7d9 27px
+    );
+  font-family: "Bahnschrift", "DIN Alternate", "Yu Gothic UI", "PingFang SC", "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
   letter-spacing: 0.2px;
 }
 
@@ -37,123 +40,215 @@ body {
   min-height: 100%;
   display: grid;
   place-items: center;
-  padding: 48px 18px;
+  padding: 30px 14px;
 }
 
 .panel {
   width: min(980px, 100%);
-  border: 1px solid var(--line);
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 24px;
-  box-shadow: var(--shadow);
+  border: 3px solid var(--line);
+  background: var(--panel);
+  box-shadow: 8px 8px 0 #2a3348;
+  position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(32, 39, 56, 0.15);
+  pointer-events: none;
 }
 
 .top {
-  padding: 28px 26px 18px;
-  border-bottom: 1px solid var(--line);
+  padding: 20px 20px 14px;
+  border-bottom: 3px solid var(--line);
   background:
-    radial-gradient(520px 260px at 22% 20%, rgba(255, 211, 106, 0.12), transparent 60%),
-    radial-gradient(600px 280px at 72% 60%, rgba(103, 178, 255, 0.10), transparent 60%);
+    linear-gradient(90deg, rgba(24, 184, 200, 0.18) 0 35%, rgba(243, 169, 62, 0.16) 35% 70%, rgba(140, 183, 65, 0.16) 70% 100%);
+}
+
+.top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .moon {
-  width: 44px;
-  height: 44px;
-  flex: 0 0 auto;
-  border-radius: 999px;
+  width: 46px;
+  height: 46px;
+  border: 3px solid var(--line);
+  border-radius: 8px;
   background:
-    radial-gradient(circle at 32% 35%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.03) 60%, rgba(0, 0, 0, 0.18)),
-    radial-gradient(circle at 58% 58%, rgba(255, 211, 106, 0.20), transparent 62%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.18);
+    radial-gradient(circle at 34% 32%, #ffdf9f 0 28%, transparent 29%),
+    radial-gradient(circle at 62% 60%, rgba(255, 255, 255, 0.85) 0 18%, transparent 19%),
+    #2f3a55;
 }
 
 h1 {
   margin: 0;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
 }
 
 .sub {
-  margin: 8px 0 0;
-  color: var(--muted);
-  line-height: 1.55;
-  font-size: 14px;
+  margin: 6px 0 0;
+  color: #2b3550;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sys-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border: 2px solid var(--line);
+  background: var(--white);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.8px;
+}
+
+.tag.cyan {
+  background: #d5f4f8;
+}
+
+.tag.amber {
+  background: #ffe4be;
+}
+
+.signal-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.signal-grid span {
+  height: 8px;
+  border: 1px solid var(--line);
+  background: var(--tile);
+}
+
+.signal-grid span:nth-child(3n + 1) {
+  background: rgba(24, 184, 200, 0.45);
+}
+
+.signal-grid span:nth-child(3n + 2) {
+  background: rgba(243, 169, 62, 0.45);
+}
+
+.signal-grid span:nth-child(3n + 3) {
+  background: rgba(140, 183, 65, 0.45);
 }
 
 .grid {
+  padding: 18px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
-  padding: 18px;
 }
 
 .card {
   position: relative;
-  display: block;
-  padding: 18px 18px 16px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, var(--card2), var(--card));
+  border: 3px solid var(--line);
+  background: var(--white);
   color: inherit;
   text-decoration: none;
-  transform: translateY(6px);
-  opacity: 0;
-  animation: enter 540ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
 }
 
-.card:nth-child(2) {
-  animation-delay: 70ms;
+.card::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-left: 3px solid var(--line);
+  border-bottom: 3px solid var(--line);
+  background: var(--tile);
 }
 
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  transform: translateY(-2px);
-  transition: transform 160ms ease, border-color 160ms ease;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #2a3348;
 }
 
 .card:focus-visible {
-  outline: 2px solid rgba(255, 211, 106, 0.55);
+  outline: 3px solid #ff6f5e;
   outline-offset: 2px;
 }
 
-.kicker {
-  display: inline-flex;
+.card-head {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.card-code {
+  font-family: "Cascadia Mono", "Consolas", "Source Code Pro", monospace;
   font-size: 12px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
+  font-weight: 700;
   color: var(--muted);
 }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.18);
+.card-state {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 9px;
+  border: 2px solid var(--line);
+  font-size: 11px;
+  font-weight: 800;
+  background: #d7f2c6;
+}
+
+.card-twi .card-state {
+  background: #d5f4f8;
+}
+
+.card-2ch .card-state {
+  background: #ffe4be;
 }
 
 .title {
-  margin: 10px 0 6px;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 10px;
 }
 
 .desc {
   margin: 0;
-  color: var(--muted);
-  font-size: 13px;
+  color: #36405b;
   line-height: 1.6;
+  font-size: 14px;
+  flex: 1;
 }
 
 .meta {
@@ -161,90 +256,111 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  font-size: 13px;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border: 2px solid var(--line);
+  background: var(--tile);
+  font-family: "Cascadia Mono", "Consolas", monospace;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .go {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.go span {
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.go svg {
-  width: 16px;
-  height: 16px;
-  opacity: 0.9;
-}
-
-.badge {
-  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+  height: 30px;
+  padding: 0 12px;
+  border: 2px solid var(--line);
+  background: var(--line);
+  color: var(--white);
   font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(0, 0, 0, 0.20);
-  color: rgba(255, 255, 255, 0.86);
-}
-
-.badge.gold {
-  border-color: rgba(255, 211, 106, 0.35);
-  background: rgba(255, 211, 106, 0.12);
-  color: var(--gold2);
-}
-
-.badge.blue {
-  border-color: rgba(103, 178, 255, 0.35);
-  background: rgba(103, 178, 255, 0.10);
-  color: rgba(203, 230, 255, 0.95);
+  font-weight: 800;
+  letter-spacing: 0.6px;
 }
 
 .foot {
-  padding: 14px 18px 18px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12px;
+  border-top: 3px solid var(--line);
+  padding: 12px 18px 16px;
   display: flex;
-  gap: 10px;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--tile);
 }
 
 .foot a {
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
   text-decoration: none;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.28);
+  border-bottom: 2px solid rgba(30, 36, 51, 0.35);
+  font-weight: 700;
 }
 
 .foot a:hover {
-  color: rgba(255, 255, 255, 0.92);
-  border-bottom-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: var(--ink);
 }
 
-@keyframes enter {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+code {
+  font-family: "Cascadia Mono", "Consolas", monospace;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 860px) {
+  .top-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sys-tags {
+    justify-content: flex-start;
+  }
+
   .grid {
     grid-template-columns: 1fr;
   }
+
+  .card {
+    min-height: 180px;
+  }
+}
+
+@media (max-width: 520px) {
+  .wrap {
+    padding: 14px 10px;
+  }
+
+  .panel {
+    border-width: 2px;
+    box-shadow: 5px 5px 0 #2a3348;
+  }
+
   .top {
-    padding: 24px 18px 16px;
+    border-bottom-width: 2px;
+    padding: 14px 12px 12px;
+  }
+
+  .grid {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .card {
+    border-width: 2px;
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .foot {
+    border-top-width: 2px;
+    padding: 10px 12px 12px;
   }
 }

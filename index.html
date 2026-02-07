@@ -3,59 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0a0b10" />
-  <title>月读 Tsukuyomi - 应用入口</title>
+  <meta name="theme-color" content="#f2ede2" />
+  <title>月读 Tsukuyomi - 聚合入口</title>
   <link rel="icon" href="twi/assets/icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="hub/style.css" />
 </head>
 <body>
   <main class="wrap">
-    <section class="panel" aria-label="应用入口">
+    <section class="panel panel-main" aria-label="应用入口">
       <header class="top">
-        <div class="brand">
-          <div class="moon" aria-hidden="true"></div>
-          <div>
-            <h1>月读 Tsukuyomi</h1>
-            <p class="sub">聚合入口：选择进入 Twitter 模拟器或 2ch 模拟器。</p>
+        <div class="top-row">
+          <div class="brand">
+            <div class="moon" aria-hidden="true"></div>
+            <div>
+              <h1>月读 Tsukuyomi</h1>
+              <p class="sub">近未来同人创作台 · 聚合入口</p>
+            </div>
           </div>
+          <div class="sys-tags" aria-label="系统状态">
+            <span class="tag cyan">LOCAL-FIRST</span>
+            <span class="tag amber">STATIC-PAGE</span>
+            <span class="tag">REV.A2</span>
+          </div>
+        </div>
+        <div class="signal-grid" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
       </header>
 
       <div class="grid">
-        <a class="card" href="./twi/" aria-label="进入 Twitter 模拟器">
-          <div class="kicker"><span class="dot"></span><span>Application</span></div>
+        <a class="card card-twi" href="./twi/" aria-label="进入 Twitter 模拟器">
+          <div class="card-head">
+            <span class="card-code">SIM-01</span>
+            <span class="card-state">ONLINE</span>
+          </div>
           <div class="title">Twitter 模拟器</div>
-          <p class="desc">发推、回帖、楼中楼、导入导出、账号与头像映射。</p>
+          <p class="desc">发推、回复、楼中楼、账号系统、图片映射与本地持久化。</p>
           <div class="meta">
-            <span class="badge gold">/twi/</span>
-            <span class="go">
-              <span>进入</span>
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </span>
+            <span class="badge">/twi/</span>
+            <span class="go">进入系统</span>
           </div>
         </a>
 
-        <a class="card" href="./2ch/" aria-label="进入 2ch 模拟器">
-          <div class="kicker"><span class="dot"></span><span>Application</span></div>
+        <a class="card card-2ch" href="./2ch/" aria-label="进入 2ch 模拟器">
+          <div class="card-head">
+            <span class="card-code">SIM-02</span>
+            <span class="card-state">ONLINE</span>
+          </div>
           <div class="title">2ch 模拟器</div>
-          <p class="desc">古早风串讨论、楼层编辑、本地持久化、线程管理。</p>
+          <p class="desc">古早风串讨论、楼层编辑、线程管理与本地状态同步。</p>
           <div class="meta">
-            <span class="badge blue">/2ch/</span>
-            <span class="go">
-              <span>进入</span>
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </span>
+            <span class="badge">/2ch/</span>
+            <span class="go">进入系统</span>
           </div>
         </a>
       </div>
 
       <footer class="foot">
-        <span>建议将此页面加入书签：`www.tukuyomi.cc.cd`</span>
-        <a href="./hub/">兼容入口（旧地址 /hub/）</a>
+        <span>建议收藏：`www.tukuyomi.cc.cd`</span>
+        <a href="./hub/">旧入口兼容页</a>
       </footer>
     </section>
   </main>
