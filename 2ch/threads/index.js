@@ -3,8 +3,8 @@ app.setThreadList({
         {
             "id": "intro",
             "title": "【公告】关于本生成器的使用说明",
-            "count": 3,
-            "date": "2030/07/12(Fri) 23:59:59"
+            "count": 6,
+            "date": "2040/09/12(Thu) 10:05:00"
         },
         {
             "id": "ayap_yachiyo_collab",

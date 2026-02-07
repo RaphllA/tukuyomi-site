@@ -1,40 +1,42 @@
-# site-publish
+# 月读项目（Tsukuyomi Project）
 
-静态聚合发布仓库（`www.tukuyomi.cc.cd`）：
+这是一个基于《超时空辉夜姬！》世界观的同人静态网页项目聚合站。  
+推荐先观看原作，再体验本项目。也请大家严格遵守同人礼仪：尊重原作、尊重创作者、避免引战与不当传播。
+
+线上入口：`www.tukuyomi.cc.cd`
+
+## 你可以在这里做什么
+
+- 在 `/twi/` 使用 Twitter 风格模拟器：发帖、回帖、编辑文本与图片、导入导出本地项目。
+- 在 `/2ch/` 使用 2ch 风格模拟器：发新串、编辑楼层、管理引用与翻译内容。
+- 用本地优先方式创作同人内容：数据默认保存在浏览器本地（IndexedDB / localStorage）。
+
+## 如何发布你的预设内容
+
+目前推荐通过 GitHub PR 参与：
+
+1. Fork 仓库并修改对应应用数据文件。
+2. 提交 PR，说明你新增/修改的帖子内容。
+3. 维护者审核后合并，内容会成为默认预设的一部分。
+
+## 接下来会做什么
+
+后续会提供更便捷的“社区快速发布”能力，减少手动 PR 的操作成本。  
+当前阶段仍以本地创作 + PR 合并为主流程。
+
+## 项目结构
+
 - `/`：聚合入口页
-- `/twi/`：Twitter 模拟器（来源：`../twitter-simulator-v2-static`）
-- `/2ch/`：2ch 模拟器（来源：`../2ch-generator`）
-- `/hub/`：旧入口兼容地址（会跳转到 `/`）
+- `/twi/`：Twitter 模拟器
+- `/2ch/`：2ch 模拟器
+- `/hub/`：旧入口兼容页（自动跳转到 `/`）
 
-## 一键同步子应用
+## 版权与同人声明
 
-在 `F:\所长的谣言\` 下三个仓库并列时执行：
-
-```powershell
-cd 'F:\所长的谣言\site-publish'
-powershell -ExecutionPolicy Bypass -File .\scripts\sync-from-sources.ps1
-```
-
-脚本会：
-- 重建 `twi/` 与 `2ch/`
-- 自动修正跨应用链接（Twitter -> `/2ch/`，2ch -> `/twi/`）
-- 保留根目录入口页、`CNAME`、`hub/`、`sw.js`
-
-## 本地预览
-
-```powershell
-cd 'F:\所长的谣言\site-publish'
-python -m http.server 8000
-```
-
-访问：
-- `http://localhost:8000/`
-- `http://localhost:8000/twi/`
-- `http://localhost:8000/2ch/`
-
-## GitHub Pages
-
-建议设置：
-- Source: `master` 分支
-- Folder: `/ (root)`
-- Custom domain: `www.tukuyomi.cc.cd`
+- 本项目为同人创作工具与展示项目，不代表官方立场，不用于商业用途。
+- 《超时空辉夜姬！》相关原作版权归原作者与权利方所有。
+- 同人设定参考说明：`STORY_FOR_CREATORS.md`（位于 Twitter 模拟器目录）。
+- 相关链接：
+  - [Github：RaphllA](https://github.com/RaphllA/site-publish)
+  - [@lofter：古法呛面馒头](https://gufaqiangmianmantou.lofter.com)
+  - [@小红书：幼儿园老大](https://xhslink.com/m/GI5hv5bP5d)
