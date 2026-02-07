@@ -290,6 +290,10 @@ class App {
         this.deletePost(Number(actionEl.dataset.postNumber || '0'));
         return;
       }
+      if (action === 'submit-thread') {
+        this.submitThread();
+        return;
+      }
       if (action === 'cancel-thread-form') {
         this.resetThreadForm();
         return;
@@ -542,6 +546,8 @@ class App {
           <a href="../hub/">Hub</a><span class="sep">|</span><a href="../">Twitter</a>
           <span class="sep">|</span>
           <a href="#" data-action="toggle-mode">${isEdit ? '查看模式' : '编辑模式'}</a>
+          <span class="sep">|</span>
+          <a href="#" data-action="submit-thread">投稿</a>
         </div>
       </div>
       <h1 class="thread-title">${titleHtml}</h1>
@@ -797,6 +803,84 @@ class App {
     this.saveState();
     this.resetPostForm();
     this.renderThread(thread.id);
+  }
+
+  getSubmissionConfig() {
+    const cfg = (window.APP_SUBMISSION_CONFIG && typeof window.APP_SUBMISSION_CONFIG === 'object')
+      ? window.APP_SUBMISSION_CONFIG
+      : {};
+    const endpoint = typeof cfg.endpoint === 'string' && cfg.endpoint.trim()
+      ? cfg.endpoint.trim()
+      : '/api/submissions';
+    const projectKey = typeof cfg.projectKey === 'string' ? cfg.projectKey.trim() : '';
+    return { endpoint, projectKey };
+  }
+
+  async submitThread() {
+    const thread = this.getThread(this.currentThreadId);
+    if (!thread) return;
+
+    const { endpoint, projectKey } = this.getSubmissionConfig();
+    if (!endpoint) {
+      alert('未配置投稿后端 endpoint。');
+      return;
+    }
+
+    const authorDisplayName = prompt('署名(可选)：', '') || '';
+    const authorContact = prompt('联系方式(可选)：', '') || '';
+    const showAuthorOnContent = confirm('是否在内容中展示署名？');
+    const note = prompt('备注(可选)：', '') || '';
+
+    const payload = {
+      thread: {
+        id: thread.id,
+        title: thread.titleText,
+        subtitle: thread.subtitleText || '',
+        featured: Boolean(thread.featured),
+        posts: (thread.posts || []).map((p) => {
+          const author = (thread.authors || {})[p.authorKey] || { uidMode: 'random', uidValue: '', uidColor: '' };
+          return {
+            number: p.number,
+            name: p.name,
+            authorKey: p.authorKey,
+            uidMode: author.uidMode,
+            uidValue: author.uidValue,
+            uidColor: author.uidColor || '',
+            body: p.body,
+            bodyColor: p.bodyColor || '',
+            date: p.date
+          };
+        })
+      }
+    };
+
+    const body = {
+      schemaVersion: 1,
+      source: '2ch',
+      projectKey: projectKey || undefined,
+      payload,
+      authorDisplayName: authorDisplayName || undefined,
+      authorContact: authorContact || undefined,
+      showAuthorOnContent,
+      note: note || undefined
+    };
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(`投稿失败: ${data.error || res.status}`);
+        return;
+      }
+      alert(`投稿成功，ID: ${data.id}`);
+    } catch (e) {
+      console.error(e);
+      alert('投稿失败：网络错误。');
+    }
   }
 
   getAuthorUid(thread, authorKey) {
