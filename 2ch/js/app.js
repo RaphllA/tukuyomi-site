@@ -2,6 +2,7 @@
 const UI_MODE_KEY = 'tukuyomi-2ch-ui-mode';
 const STATE_SCHEMA_VERSION = 2;
 const DATA_VERSION = 1;
+const INTRO_THREAD_ID = 'intro';
 const APP_STATE_DB_NAME = 'Tukuyomi2chDB';
 const APP_STATE_DB_VERSION = 1;
 const APP_STATE_STORE = 'appState';
@@ -132,6 +133,26 @@ class App {
     return merged;
   }
 
+  mergeIntroThread(defaultThread, savedThread) {
+    const baseThread = cloneDeep(defaultThread || {});
+    if (!savedThread) return baseThread;
+
+    const basePosts = Array.isArray(defaultThread?.posts) ? defaultThread.posts : [];
+    const savedPosts = Array.isArray(savedThread?.posts) ? savedThread.posts : [];
+    const baseNumbers = new Set(basePosts.map((post) => Number(post?.number || 0)));
+    const extraPosts = savedPosts
+      .filter((post) => !baseNumbers.has(Number(post?.number || 0)))
+      .map((post) => cloneDeep(post));
+
+    baseThread.posts = [...cloneDeep(basePosts), ...extraPosts];
+    baseThread.posts.sort((a, b) => Number(a?.number || 0) - Number(b?.number || 0));
+    baseThread.authors = {
+      ...(defaultThread?.authors || {}),
+      ...(savedThread?.authors || {})
+    };
+    return baseThread;
+  }
+
   mergeThreads(defaultThreads, savedThreads) {
     const base = Array.isArray(defaultThreads) ? defaultThreads : [];
     const saved = Array.isArray(savedThreads) ? savedThreads : [];
@@ -143,6 +164,11 @@ class App {
       const savedThread = savedMap.get(id);
       if (!savedThread) {
         merged.push(cloneDeep(thread));
+        continue;
+      }
+
+      if (id === INTRO_THREAD_ID) {
+        merged.push(this.mergeIntroThread(thread, savedThread));
         continue;
       }
 
@@ -248,13 +274,7 @@ class App {
     const savedState = this.normalizeStateShape(persisted);
     let nextState = baseState;
     if (savedState) {
-      nextState = savedState.dataVersion >= DATA_VERSION
-        ? {
-          schemaVersion: STATE_SCHEMA_VERSION,
-          dataVersion: savedState.dataVersion,
-          threads: cloneDeep(savedState.threads)
-        }
-        : this.mergeState(baseState, savedState);
+      nextState = this.mergeState(baseState, savedState);
     }
 
     nextState.schemaVersion = STATE_SCHEMA_VERSION;
@@ -650,7 +670,7 @@ class App {
       <header class="site-header">
         <h1 class="site-title">所长的谣言板</h1>
         <div class="site-nav">
-          <a href="../">入口</a><span class="sep">|</span><a href="../twi/">Twitter</a>
+          <a href="../hub/">Hub</a><span class="sep">|</span><a href="../">Twitter</a>
           <span class="sep">|</span>
           <a href="#" data-action="toggle-mode">${isEdit ? '查看模式' : '编辑模式'}</a>
         </div>
@@ -681,7 +701,7 @@ class App {
           <div class="site-nav">
             <a href="index.html" style="text-decoration:none; color: #CC0000;">&lt; 返回</a>
             <span class="sep">|</span>
-            <a href="../">入口</a><span class="sep">|</span><a href="../twi/">Twitter</a>
+            <a href="../hub/">Hub</a><span class="sep">|</span><a href="../">Twitter</a>
           </div>
         </div>
         <p style="padding: 10px; color:#666;">Thread not found: ${escapeHtml(threadId)}</p>
@@ -737,7 +757,7 @@ class App {
         <div class="site-nav">
           <a href="index.html" style="text-decoration:none; color: #CC0000;">&lt; 返回</a>
           <span class="sep">|</span>
-          <a href="../">入口</a><span class="sep">|</span><a href="../twi/">Twitter</a>
+          <a href="../hub/">Hub</a><span class="sep">|</span><a href="../">Twitter</a>
           <span class="sep">|</span>
           <a href="#" data-action="toggle-mode">${isEdit ? '查看模式' : '编辑模式'}</a>
         </div>
