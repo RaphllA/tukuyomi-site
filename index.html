@@ -1,87 +1,721 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f2ede2" />
-  <title>月读 Tsukuyomi - 聚合入口</title>
-  <link rel="icon" href="twi/assets/icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="hub/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>所长的谣言 - 聚合入口</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Noto+Sans+SC:wght@400;600;700;800&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: "FusionPixel10Zh";
+      src: url("./fonts/fusion-pixel-10px-proportional-zh_hans.ttf.woff2") format("woff2");
+      font-display: swap;
+      unicode-range:
+        U+3000-303F,
+        U+3400-4DBF,
+        U+4E00-9FFF,
+        U+F900-FAFF,
+        U+FF00-FFEF,
+        U+20000-2A6DF,
+        U+2A700-2B73F,
+        U+2B740-2B81F,
+        U+2B820-2CEAF;
+    }
+
+    @font-face {
+      font-family: "FusionPixel10Latin";
+      src: url("./fonts/fusion-pixel-10px-proportional-latin.ttf.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    :root {
+      --paper: #f5f0e2;
+      --paper-deep: #ece4d1;
+      --line: #1b1b1b;
+      --ink: #151515;
+      --card: #fbf9ef;
+      --button: #1f2b45;
+      --shadow: #202020;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "FusionPixel10Zh", "FusionPixel10Latin", "Noto Sans SC", sans-serif;
+      background:
+        linear-gradient(rgba(245, 240, 226, 0.72), rgba(236, 228, 209, 0.8)),
+        url("./background.png");
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(to right, rgba(40, 40, 40, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(40, 40, 40, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.25;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.05) 0,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.34;
+    }
+
+    .stage {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2.1rem 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal {
+      width: min(92vw, 900px);
+      background: #f8f5ea;
+      border: 4px solid var(--line);
+      box-shadow: 10px 10px 0 var(--shadow);
+      animation: raise 520ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+    }
+
+    .topbar {
+      background: #0f1016;
+      color: #f5f5f5;
+      font-family: "FusionPixel10Latin", monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 0.65rem 0.9rem;
+    }
+
+    .hero {
+      margin: 0.95rem;
+      border: 2px solid var(--line);
+      background:
+        linear-gradient(120deg, rgba(106, 185, 204, 0.13), transparent 49%),
+        #f8f5ea;
+      padding: 0.85rem 0.9rem 0.95rem;
+    }
+
+    .hero-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 0;
+      border: 3px solid #2a3453;
+      background: #2a3d69;
+      position: relative;
+      flex: 0 0 auto;
+      box-shadow: inset -2px -2px 0 rgba(17, 26, 44, 0.45);
+      overflow: hidden;
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #f4da8c;
+      left: 14px;
+      top: 8px;
+      box-shadow:
+        4px 0 #f4da8c,
+        8px 0 #f4da8c,
+        12px 0 #f4da8c,
+        -4px 4px #f4da8c,
+        0 4px #f4da8c,
+        4px 4px #f4da8c,
+        8px 4px #f4da8c,
+        12px 4px #f4da8c,
+        16px 4px #f4da8c,
+        -4px 8px #f4da8c,
+        0 8px #f4da8c,
+        4px 8px #f4da8c,
+        8px 8px #f4da8c,
+        12px 8px #f4da8c,
+        16px 8px #f4da8c,
+        -4px 12px #f4da8c,
+        0 12px #f4da8c,
+        4px 12px #f4da8c,
+        8px 12px #f4da8c,
+        12px 12px #f4da8c,
+        16px 12px #f4da8c,
+        20px 12px #f4da8c,
+        -4px 16px #f4da8c,
+        0 16px #f4da8c,
+        4px 16px #f4da8c,
+        8px 16px #f4da8c,
+        12px 16px #f4da8c,
+        16px 16px #f4da8c,
+        0 20px #f4da8c,
+        4px 20px #f4da8c,
+        8px 20px #f4da8c,
+        12px 20px #f4da8c;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #e8edf5;
+      left: 28px;
+      top: 28px;
+      box-shadow:
+        4px 0 #e8edf5,
+        8px 0 #e8edf5,
+        0 4px #e8edf5,
+        4px 4px #e8edf5,
+        8px 4px #e8edf5,
+        12px 4px #e8edf5,
+        0 8px #e8edf5,
+        4px 8px #e8edf5,
+        8px 8px #e8edf5,
+        12px 8px #e8edf5,
+        4px 12px #e8edf5,
+        8px 12px #e8edf5;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.34rem;
+    }
+
+    .brand-title .brand-cn {
+      font-family: "FusionPixel10Zh", "FusionPixel10Latin", "Noto Sans SC", monospace;
+      color: #121212;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      font-style: oblique 12deg;
+      text-shadow:
+        1px 0 #c9774f,
+        1px 1px 0 #c9774f,
+        2px 2px 0 #101010;
+      -webkit-text-stroke: 0.4px #0f0f0f;
+    }
+
+    .brand-title .brand-en {
+      font-family: "FusionPixel10Latin", "FusionPixel10Zh", "Noto Sans SC", monospace;
+      color: #c9774f;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-style: oblique 12deg;
+      text-shadow:
+        -1px 0 #121212,
+        0 1px #121212,
+        2px 2px 0 #101010;
+    }
+
+    .brand-sub {
+      margin: 0.26rem 0 0;
+      font-size: clamp(0.86rem, 1.15vw, 1.02rem);
+      color: #324867;
+      font-weight: 600;
+      text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.62);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.62rem;
+      justify-content: flex-end;
+    }
+
+    .hero-tags span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--line);
+      background: #f7f5ee;
+      min-width: 118px;
+      padding: 0.45rem 0.55rem;
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      color: #142d52;
+    }
+
+    .hero-tags .tag-cyan {
+      background: #dff1f5;
+    }
+
+    .hero-bars {
+      margin-top: 0.75rem;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.42rem;
+    }
+
+    .hero-bars span {
+      height: 11px;
+      border: 1px solid rgba(32, 45, 73, 0.6);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+    }
+
+    .hero-bars span:nth-child(1),
+    .hero-bars span:nth-child(4) {
+      background: #88cfd4;
+    }
+
+    .hero-bars span:nth-child(2),
+    .hero-bars span:nth-child(5) {
+      background: #f1d79e;
+    }
+
+    .hero-bars span:nth-child(3),
+    .hero-bars span:nth-child(6) {
+      background: #c8d99a;
+    }
+
+    .boards {
+      margin: 0 0.95rem;
+      border: 3px solid var(--line);
+      border-top: 0;
+      background: #eee9db;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      padding: 0.8rem;
+    }
+
+    .board {
+      border: 3px solid var(--line);
+      background: var(--card);
+      min-height: 252px;
+      padding: 1rem 0.9rem 0.82rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .board::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 10px;
+      width: 84px;
+      height: 30px;
+      border: 3px solid var(--line);
+      background: #dbf3f6;
+      display: grid;
+      place-items: center;
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      color: #173c57;
+      z-index: 1;
+    }
+
+    .board-2ch::after {
+      background: #f7deb4;
+      color: #4d330f;
+    }
+
+    .board::before {
+      content: none;
+      display: none;
+    }
+
+    .board-twitter::after {
+      content: "ONLINE";
+    }
+
+    .board-2ch::after {
+      content: "ONLINE";
+    }
+
+    .sim {
+      margin: 0;
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      color: #56627f;
+      letter-spacing: 0.04em;
+    }
+
+    .board h2 {
+      margin: 0.72rem 0 0;
+      font-size: clamp(1.18rem, 1.95vw, 1.65rem);
+      line-height: 1.2;
+      color: #0f2448;
+      letter-spacing: 0.02em;
+      text-shadow:
+        -1px 0 rgba(116, 165, 180, 0.45),
+        1px 0 rgba(207, 139, 96, 0.4),
+        1px 1px 0 rgba(10, 16, 33, 0.14);
+    }
+
+    .latin-token {
+      font-family: "FusionPixel10Latin", monospace;
+      font-size: 0.9em;
+      letter-spacing: 0.02em;
+    }
+
+    .board p {
+      margin: 0.58rem 0 0;
+      font-size: clamp(0.78rem, 1.02vw, 0.95rem);
+      line-height: 1.52;
+      color: #31456c;
+    }
+
+    .board-foot {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .path-tag {
+      border: 2px solid var(--line);
+      background: #e9e4d4;
+      min-width: 80px;
+      text-align: center;
+      padding: 0.38rem 0.55rem;
+      font-family: "Press Start 2P", monospace;
+      font-size: 9px;
+      color: #1a2a48;
+    }
+
+    .go-btn {
+      border: 2px solid var(--line);
+      background: var(--button);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: clamp(0.88rem, 1vw, 1.02rem);
+      font-weight: 800;
+      padding: 0.4rem 0.66rem;
+      transition: transform 120ms ease, filter 120ms ease;
+    }
+
+    .go-btn:hover {
+      transform: translate(-2px, -2px);
+      filter: brightness(1.1);
+    }
+
+    .meta-strip {
+      margin: 0 0.95rem 0.95rem;
+      border: 1px solid rgba(31, 42, 64, 0.15);
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 0.45rem;
+      background: #eee9db;
+    }
+
+    .meta-left {
+      border: 3px solid var(--line);
+      background: #f5f0e2;
+      min-height: 50px;
+      padding: 0.24rem 0.48rem;
+      font-size: clamp(0.68rem, 0.82vw, 0.78rem);
+      color: #26395a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.58rem;
+    }
+
+    .meta-left .meta-title {
+      margin: 0;
+      font-family: "FusionPixel10Latin", monospace;
+      font-size: clamp(0.48rem, 0.56vw, 0.56rem);
+      color: #101a30;
+      white-space: nowrap;
+    }
+
+    .meta-left ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.2rem 0.8rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .meta-left li {
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .meta-left a {
+      color: #365173;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+      font-size: clamp(0.58rem, 0.72vw, 0.66rem);
+      font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    }
+
+    .meta-right {
+      border: 3px solid #101521;
+      background:
+        radial-gradient(circle at 45% 45%, rgba(147, 219, 240, 0.3), rgba(16, 18, 29, 0) 44%),
+        #0f111a;
+      color: #eef9ff;
+      min-height: 62px;
+      padding: 0.24rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 3px 3px 0 #111;
+    }
+
+    .glow99 {
+      margin: 0;
+      font-family: "FusionPixel10Zh", "FusionPixel10Latin", "Noto Sans SC", monospace;
+      font-size: clamp(1.26rem, 1.8vw, 1.62rem);
+      line-height: 1.05;
+      color: #c9774f;
+      letter-spacing: 0.08em;
+      text-shadow:
+        -1px 0 #121212,
+        0 1px #121212,
+        2px 2px #121212;
+      animation: glowblink 1.08s steps(2, jump-none) infinite;
+    }
+
+    .glow99 .latin-token {
+      font-size: 1.22em;
+      letter-spacing: 0;
+      vertical-align: baseline;
+    }
+
+    @media (max-width: 1220px) {
+      .hero-head {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-tags {
+        justify-content: flex-start;
+      }
+
+      .boards {
+        grid-template-columns: 1fr;
+      }
+
+      .board {
+        min-height: 220px;
+      }
+
+      .meta-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 780px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .topbar {
+        font-size: 9px;
+        line-height: 1.5;
+      }
+
+      .hero {
+        margin: 0.9rem;
+        padding: 0.9rem;
+      }
+
+      .boards {
+        margin: 0 0.9rem;
+        padding: 0.95rem;
+        gap: 0.95rem;
+      }
+
+      .board {
+        min-height: 190px;
+        padding: 0.85rem 0.8rem 0.72rem;
+      }
+
+      .board::after {
+        right: 8px;
+        top: 8px;
+        width: 70px;
+        height: 24px;
+        font-size: 7px;
+        border-width: 2px;
+      }
+
+      .path-tag {
+        min-width: 70px;
+        font-size: 8px;
+      }
+
+      .go-btn {
+        font-size: 0.78rem;
+        padding: 0.35rem 0.5rem;
+      }
+
+      .meta-strip {
+        margin: 0 0.9rem 0.9rem;
+        gap: 0.6rem;
+      }
+
+      .meta-left,
+      .meta-right {
+        min-height: 0;
+        padding: 0.52rem 0.62rem;
+      }
+
+      .meta-left {
+        display: grid;
+        gap: 0.36rem;
+      }
+
+      .hero-bars {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @keyframes glowblink {
+      0%,
+      44% {
+        opacity: 1;
+      }
+      45%,
+      54% {
+        opacity: 0.35;
+      }
+      55%,
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes raise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="panel panel-main" aria-label="应用入口">
-      <header class="top">
-        <div class="top-row">
+  <main class="stage">
+    <section class="portal" aria-label="聚合入口页面">
+      <div class="topbar">SHOCHO.RUMOR // AGGREGATOR ENTRY</div>
+
+      <header class="hero" aria-label="入口头部信息">
+        <div class="hero-head">
           <div class="brand">
-            <div class="moon" aria-hidden="true"></div>
+            <div class="brand-mark" aria-hidden="true"></div>
             <div>
-              <h1>月读 Tsukuyomi</h1>
-              <p class="sub">近未来同人创作台 · 聚合入口</p>
+              <h1 class="brand-title">
+                <span class="brand-cn">月读</span>
+                <span class="brand-en">TSUKUYOMI</span>
+              </h1>
+              <p class="brand-sub">酒寄所长的奇妙流言·聚合入口</p>
             </div>
           </div>
-          <div class="sys-tags" aria-label="系统状态">
-            <span class="tag cyan">LOCAL-FIRST</span>
-            <span class="tag amber">STATIC-PAGE</span>
-            <span class="tag">REV.A2</span>
+
+          <div class="hero-tags" aria-label="系统状态">
+            <span class="tag-cyan">LOCAL-FIRST</span>
+            <span>STATIC-PAGE</span>
+            <span>REV.A2</span>
           </div>
         </div>
-        <div class="signal-grid" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span><span></span>
+
+        <div class="hero-bars" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </header>
 
-      <div class="grid">
-        <a class="card card-twi" href="./twi/" aria-label="进入 Twitter 模拟器">
-          <div class="card-head">
-            <span class="card-code">SIM-01</span>
-            <span class="card-state">ONLINE</span>
+      <section class="boards" aria-label="双板块入口">
+        <article class="board board-twitter">
+          <p class="sim">SIM-01</p>
+          <h2><span class="latin-token">Twitter</span>模拟器</h2>
+          <p>发推、回复、楼中楼、账号系统、图片映射与本地持久化。</p>
+          <div class="board-foot">
+            <div class="path-tag">/twi/</div>
+            <a class="go-btn" href="./twi/">进入系统</a>
           </div>
-          <div class="title">Twitter 模拟器</div>
-          <p class="desc">发推、回复、楼中楼、账号系统、图片映射与本地持久化。</p>
-          <div class="meta">
-            <span class="badge">/twi/</span>
-            <span class="go">进入系统</span>
-          </div>
-        </a>
+        </article>
 
-        <a class="card card-2ch" href="./2ch/" aria-label="进入 2ch 模拟器">
-          <div class="card-head">
-            <span class="card-code">SIM-02</span>
-            <span class="card-state">ONLINE</span>
+        <article class="board board-2ch">
+          <p class="sim">SIM-02</p>
+          <h2><span class="latin-token">2ch</span>模拟器</h2>
+          <p>古早风串讨论、楼层编辑、线程管理与本地状态同步。</p>
+          <div class="board-foot">
+            <div class="path-tag">/2ch/</div>
+            <a class="go-btn" href="./2ch/">进入系统</a>
           </div>
-          <div class="title">2ch 模拟器</div>
-          <p class="desc">古早风串讨论、楼层编辑、线程管理与本地状态同步。</p>
-          <div class="meta">
-            <span class="badge">/2ch/</span>
-            <span class="go">进入系统</span>
-          </div>
-        </a>
-      </div>
+        </article>
+      </section>
 
-      <footer class="foot">
-        <span>建议收藏：`www.tukuyomi.cc.cd`</span>
-        <a href="./hub/">旧入口兼容页</a>
+      <footer class="meta-strip" aria-label="版权与支持信息">
+        <aside class="meta-left" aria-label="版权与作者链接">
+          <p class="meta-title">COPYRIGHT</p>
+          <ul>
+            <li><a href="https://github.com/RaphllA/site-publish" target="_blank" rel="noopener noreferrer">@Github：RaphllA</a></li>
+            <li><a href="https://gufaqiangmianmantou.lofter.com" target="_blank" rel="noopener noreferrer">@lofter：古法呛面馒头</a></li>
+            <li><a href="https://xhslink.com/m/GI5hv5bP5d" target="_blank" rel="noopener noreferrer">@小红书：幼儿园老大</a></li>
+          </ul>
+        </aside>
+
+        <aside class="meta-right" aria-label="支持推荐">
+          <p class="glow99">彩辉<span class="latin-token">99</span></p>
+        </aside>
       </footer>
     </section>
   </main>
-
-  <script>
-    (() => {
-      if (!('serviceWorker' in navigator)) return;
-      navigator.serviceWorker.getRegistrations().then((regs) => {
-        regs.forEach((reg) => {
-          try {
-            const scopePath = new URL(reg.scope).pathname;
-            if (scopePath === '/' || scopePath === '/site-publish/') {
-              reg.unregister();
-            }
-          } catch (_) {
-            reg.unregister();
-          }
-        });
-      }).catch(() => {});
-    })();
-  </script>
 </body>
 </html>
