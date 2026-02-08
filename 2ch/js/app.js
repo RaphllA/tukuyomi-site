@@ -7,7 +7,7 @@ const APP_STATE_DB_NAME = 'Tukuyomi2chDB';
 const APP_STATE_DB_VERSION = 1;
 const APP_STATE_STORE = 'appState';
 const APP_STATE_RECORD_KEY = 'current';
-const APP_BUILD_TAG = 'b20260208-5';
+const APP_BUILD_TAG = 'b20260208-6';
 
 function escapeHtml(text) {
   return String(text || '')
@@ -402,7 +402,7 @@ class App {
 
   async evalThreadScript(path, expectedFn) {
     try {
-      const res = await fetch(path, { cache: 'no-store' });
+      const res = await fetch(`${path}?v=${APP_BUILD_TAG}`, { cache: 'no-store' });
       if (!res.ok) throw new Error(`Fetch failed: ${path} (${res.status})`);
       const code = await res.text();
 
@@ -442,6 +442,7 @@ class App {
       };
 
       const script = document.createElement('script');
+      path = `${path}?v=${APP_BUILD_TAG}`;
       script.src = path;
       script.onerror = () => {
         clearTimeout(timer);
