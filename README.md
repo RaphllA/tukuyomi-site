@@ -30,13 +30,30 @@
 - `/twi/`：Twitter 模拟器
 - `/2ch/`：2ch 模拟器
 - `/hub/`：旧入口兼容页（自动跳转到 `/`）
+- `/readme/`：集中放置 twi/2ch 的文档与背景写作指导
+
+## 单仓库开发流程
+
+`/twi` 与 `/2ch` 已改为本仓库内普通目录，直接在本仓库开发即可。
+
+首次克隆：
+
+```bash
+git clone https://github.com/RaphllA/tukuyomi-site.git
+```
+
+查看当前状态：
+
+```powershell
+./scripts/sync-from-sources.ps1
+```
 
 ## 版权与同人声明
 
 - 本项目为同人创作工具与展示项目，不代表官方立场，不用于商业用途。
 - 《超时空辉夜姬！》相关原作版权归原作者与权利方所有。
-- 同人设定参考说明：`STORY_FOR_CREATORS.md`（位于 Twitter 模拟器目录）。
+- 同人设定参考说明：`readme/twi/STORY_FOR_CREATORS.md`。
 - 相关链接：
-  - [Github：RaphllA](https://github.com/RaphllA/site-publish)
+  - [Github：RaphllA](https://github.com/RaphllA/tukuyomi-site)
   - [@lofter：古法呛面馒头](https://gufaqiangmianmantou.lofter.com)
   - [@小红书：幼儿园老大](https://xhslink.com/m/GI5hv5bP5d)

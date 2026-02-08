@@ -41,7 +41,8 @@ app.setThreadData({
             "name": "管理員",
             "date": "2040/09/12(Thu) 10:05:00.00",
             "uid": "ID:Admin001",
-            "body": "<b>【5】保存、协作与版权</b>\n\n- 当前版本为本地优先：数据存 IndexedDB，清缓存会丢失\n- 想把你的内容变成默认预设，请通过 GitHub PR 提交\n- 后续会提供「快速发布社区功能」减少手动提交流程\n\n<b>同人声明：</b>\n请支持《超时空辉夜姬！》原作，遵守同人礼仪，禁止冒充官方与商用。\n\n相关链接：\n- [Github：RaphllA](https://github.com/RaphllA/site-publish)\n- [@lofter：古法呛面馒头](https://gufaqiangmianmantou.lofter.com)\n- [@小红书：幼儿园老大](https://xhslink.com/m/GI5hv5bP5d)"
+            "body": "<b>【5】保存、协作与版权</b>\n\n- 当前版本为本地优先：数据存 IndexedDB，清缓存会丢失\n- 想把你的内容变成默认预设，请通过 GitHub PR 提交\n- 后续会提供「快速发布社区功能」减少手动提交流程\n\n<b>同人声明：</b>\n请支持《超时空辉夜姬！》原作，遵守同人礼仪，禁止冒充官方与商用。\n\n相关链接：\n- [Github：RaphllA](https://github.com/RaphllA/tukuyomi-site)\n- [@lofter：古法呛面馒头](https://gufaqiangmianmantou.lofter.com)\n- [@小红书：幼儿园老大](https://xhslink.com/m/GI5hv5bP5d)"
         }
     ]
 });
+
