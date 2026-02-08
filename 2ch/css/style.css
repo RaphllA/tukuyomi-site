@@ -203,6 +203,24 @@ a {
     color: #D00;
 }
 
+.thread-list-title-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.thread-list-title-line .edit-actions {
+    font-size: 14px;
+}
+
+.thread-list-subtitle {
+    margin-top: 2px;
+    color: #777;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
 /* Thread View */
 .thread-title {
     font-size: 32px;

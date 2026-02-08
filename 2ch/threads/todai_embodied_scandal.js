@@ -1,5 +1,5 @@
 app.setThreadData({
-    "title": "【悲報】東大の具身知能研の「あの件」、聞いた？<div class=\"title-subtitle\">（【悲报】东大具身智能研究所的\"那件事\"，听说了吗？）</div>",
+    "title": "【悲報】東大の具身知能研の「あの件」、聞いた？<div class=\"title-subtitle\">【悲报】东大具身智能研究所的\"那件事\"，听说了吗？</div>",
     "posts": [
         {
             "number": 1,

@@ -1,5 +1,5 @@
 app.setThreadData({
-    "title": "【悲報】彩P、ヤチヨとコラボ確定www いろぐや厨息してる？ww<div class=\"title-subtitle\">（【悲报】彩P确定与ヤチヨ联动www 彩辉厨还活着吗？ww）</div>",
+    "title": "【悲報】彩P、ヤチヨとコラボ確定www いろぐや厨息してる？ww<div class=\"title-subtitle\">【悲报】彩P确定与ヤチヨ联动www 彩辉厨还活着吗？ww</div>",
     "posts": [
         {
             "number": 1,

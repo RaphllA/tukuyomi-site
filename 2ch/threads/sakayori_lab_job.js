@@ -1,5 +1,5 @@
 app.setThreadData({
-    "title": "【就職】東大の具身知能研ってどうよ？ボスが美少女天才ってマジ？<div class=\"title-subtitle\">（【求职】东大的具身智能研怎么样？听说老板是美少女天才真的假的？）</div>",
+    "title": "【就職】東大の具身知能研ってどうよ？ボスが美少女天才ってマジ？<div class=\"title-subtitle\">【求职】东大的具身智能研怎么样？听说老板是美少女天才真的假的？</div>",
     "posts": [
         {
             "number": 1,

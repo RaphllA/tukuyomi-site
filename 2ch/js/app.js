@@ -7,7 +7,7 @@ const APP_STATE_DB_NAME = 'Tukuyomi2chDB';
 const APP_STATE_DB_VERSION = 1;
 const APP_STATE_STORE = 'appState';
 const APP_STATE_RECORD_KEY = 'current';
-const APP_BUILD_TAG = 'b20260208-6';
+const APP_BUILD_TAG = 'b20260208-7';
 
 function escapeHtml(text) {
   return String(text || '')
@@ -22,12 +22,19 @@ function stripHtml(html) {
   return String(html || '').replace(/<[^>]*>/g, '');
 }
 
+function normalizeSubtitleText(text) {
+  const raw = String(text || '').trim();
+  if (!raw) return '';
+  const wrappedMatch = raw.match(/^[（(]\s*([\s\S]*?)\s*[）)]$/);
+  return wrappedMatch ? wrappedMatch[1].trim() : raw;
+}
+
 function parseTitleHtml(titleHtml) {
   const raw = String(titleHtml || '');
   const featured = raw.includes('gold-title');
 
   const subtitleMatch = raw.match(/<div\s+class="title-subtitle">\s*([\s\S]*?)\s*<\/div>/i);
-  const subtitleText = subtitleMatch ? stripHtml(subtitleMatch[1]).trim() : '';
+  const subtitleText = subtitleMatch ? normalizeSubtitleText(stripHtml(subtitleMatch[1])) : '';
   const titleOnly = raw.replace(/<div\s+class="title-subtitle">[\s\S]*?<\/div>/i, '');
   const titleText = stripHtml(titleOnly).trim();
   return { titleText, subtitleText, featured };
@@ -114,6 +121,8 @@ class App {
         const normalized = cloneDeep(thread);
         normalized.id = normalizeThreadIdentifier(normalized.id);
         if (!normalized.id) return null;
+        normalized.titleText = String(normalized.titleText || '').trim();
+        normalized.subtitleText = normalizeSubtitleText(normalized.subtitleText);
         return normalized;
       })
       .filter(Boolean);
@@ -332,7 +341,7 @@ class App {
     const id = safeThreadId(normalizeThreadIdentifier(urlParams.get('id')));
     const hasTitleParam = urlParams.has('title');
     const titleText = String(urlParams.get('title') || '').trim();
-    const subtitleText = String(urlParams.get('subtitle') || '').trim();
+    const subtitleText = normalizeSubtitleText(urlParams.get('subtitle'));
 
     if (!id || !hasTitleParam || !titleText) return null;
     return { id, titleText, subtitleText };
@@ -688,18 +697,24 @@ class App {
       const titleHtml = t.featured
         ? `<span class="gold-title">${escapeHtml(t.titleText)}</span>`
         : escapeHtml(t.titleText);
+      const subtitleHtml = t.subtitleText
+        ? `<div class="thread-list-subtitle">${escapeHtml(t.subtitleText)}</div>`
+        : '';
 
       const count = Array.isArray(t.posts) ? t.posts.length : 0;
       const date = this.convertToJapaneseDate(t.listDate || '');
 
       const editActions = isEdit
-        ? ` <span class="edit-actions">[<a href="#" data-action="edit-thread" data-thread-id="${escapeHtml(t.id)}">编辑</a>] [<a href="#" data-action="delete-thread" data-thread-id="${escapeHtml(t.id)}">删除</a>]</span>`
+        ? `<span class="edit-actions">[<a href="#" data-action="edit-thread" data-thread-id="${escapeHtml(t.id)}">编辑</a>] [<a href="#" data-action="delete-thread" data-thread-id="${escapeHtml(t.id)}">删除</a>]</span>`
         : '';
 
       return `
         <tr>
           <td>
-            <a href="thread.html?id=${encodeURIComponent(t.id)}">${titleHtml} (${count})</a>${editActions}
+            <div class="thread-list-title-line">
+              <a class="thread-link" href="thread.html?id=${encodeURIComponent(t.id)}">${titleHtml} (${count})</a>${editActions}
+            </div>
+            ${subtitleHtml}
           </td>
           <td style="white-space:nowrap; text-align:right; color:#666;">${date}</td>
         </tr>
@@ -1109,7 +1124,7 @@ class App {
     const mode = (form.querySelector('#thread-form-mode')?.value || 'create').trim();
     const id = safeThreadId(form.querySelector('#thread-id')?.value || '');
     const titleText = String(form.querySelector('#thread-title')?.value || '').trim();
-    const subtitleText = String(form.querySelector('#thread-subtitle')?.value || '').trim();
+    const subtitleText = normalizeSubtitleText(form.querySelector('#thread-subtitle')?.value || '');
     const featured = Boolean(form.querySelector('#thread-featured')?.checked);
 
     if (mode === 'create') {

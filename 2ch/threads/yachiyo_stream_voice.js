@@ -1,5 +1,5 @@
 app.setThreadData({
-    "title": "<span class=\"gold-title\">★【良スレ】先日ヤチヨの配信に乗った声、やっぱ彩Pだよな？同棲確定か？</span><div class=\"title-subtitle\">（【精品】那天ヤチヨ直播间里暴露的果然是彩P的声音吧？两个人同居确定？）</div>",
+    "title": "<span class=\"gold-title\">★【良スレ】先日ヤチヨの配信に乗った声、やっぱ彩Pだよな？同棲確定か？</span><div class=\"title-subtitle\">【精品】那天ヤチヨ直播间里暴露的果然是彩P的声音吧？两个人同居确定？</div>",
     "posts": [
         {
             "number": 1,
