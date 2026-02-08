@@ -95,6 +95,8 @@ class App {
     this._dbPromise = null;
     this._persistQueue = Promise.resolve();
     this._seedWaiter = null;
+    this._seedWaiters = new Map();
+    this._threadSeedPromises = new Map();
   }
 
   loadUiMode() {
@@ -360,7 +362,10 @@ class App {
         featured: false,
         listDate: format2chDate(new Date()),
         posts: [],
-        authors: {}
+        authors: {},
+        seedLoaded: true,
+        seedCount: 0,
+        seedSource: 'local'
       });
       changed = true;
       thread = this.getThread(request.id);
@@ -436,27 +441,46 @@ class App {
   evalThreadScriptByTag(path, expectedFn) {
     return new Promise((resolve, reject) => {
       const previousWaiter = this._seedWaiter;
+      const pathWithVersion = `${path}?v=${APP_BUILD_TAG}`;
+      const script = document.createElement('script');
+      script.src = pathWithVersion;
+      const waiterKey = script.src;
+
       const timer = setTimeout(() => {
+        this._seedWaiters.delete(waiterKey);
         this._seedWaiter = previousWaiter;
         reject(new Error(`Seed load timeout: ${path}`));
       }, 8000);
 
+      // Backward-compatible fallback waiter (sequential mode).
       this._seedWaiter = {
         expectedFn,
         resolve: (data) => {
           clearTimeout(timer);
+          this._seedWaiters.delete(waiterKey);
           this._seedWaiter = previousWaiter;
           resolve(data);
         }
       };
 
-      const script = document.createElement('script');
-      path = `${path}?v=${APP_BUILD_TAG}`;
-      script.src = path;
+      // Primary waiter keyed by script src (supports parallel script loads).
+      this._seedWaiters.set(waiterKey, {
+        expectedFn,
+        resolve: (data) => {
+          clearTimeout(timer);
+          this._seedWaiters.delete(waiterKey);
+          if (this._seedWaiter === previousWaiter) {
+            this._seedWaiter = null;
+          }
+          resolve(data);
+        }
+      });
+
       script.onerror = () => {
         clearTimeout(timer);
+        this._seedWaiters.delete(waiterKey);
         this._seedWaiter = previousWaiter;
-        reject(new Error(`Failed to load seed script: ${path}`));
+        reject(new Error(`Failed to load seed script: ${pathWithVersion}`));
       };
       script.onload = () => {
         // Execution happens before onload; keep DOM tidy.
@@ -468,12 +492,26 @@ class App {
 
   // Compatibility for file:// usage (threads/*.js call these).
   setThreadList(data) {
+    const currentScript = document.currentScript;
+    const currentSrc = currentScript && currentScript.src ? currentScript.src : '';
+    const keyedWaiter = currentSrc ? this._seedWaiters.get(currentSrc) : null;
+    if (keyedWaiter && keyedWaiter.expectedFn === 'setThreadList') {
+      keyedWaiter.resolve(data);
+      return;
+    }
     if (this._seedWaiter && this._seedWaiter.expectedFn === 'setThreadList') {
       this._seedWaiter.resolve(data);
     }
   }
 
   setThreadData(data) {
+    const currentScript = document.currentScript;
+    const currentSrc = currentScript && currentScript.src ? currentScript.src : '';
+    const keyedWaiter = currentSrc ? this._seedWaiters.get(currentSrc) : null;
+    if (keyedWaiter && keyedWaiter.expectedFn === 'setThreadData') {
+      keyedWaiter.resolve(data);
+      return;
+    }
     if (this._seedWaiter && this._seedWaiter.expectedFn === 'setThreadData') {
       this._seedWaiter.resolve(data);
     }
@@ -481,60 +519,106 @@ class App {
 
   async seedFromFiles() {
     const list = await this.evalThreadScript('threads/index.js', 'setThreadList');
-    const threads = [];
-
-    for (const meta of list.threads || []) {
+    const threadMeta = (list.threads || []).filter((meta) => String(meta?.id || '').trim());
+    const threads = threadMeta.map((meta) => {
       const id = String(meta.id || '').trim();
-      if (!id) continue;
-      const threadData = await this.evalThreadScript(`threads/${id}.js`, 'setThreadData');
-
-      const parsedTitle = parseTitleHtml(threadData.title || meta.title || '');
+      const parsedTitle = parseTitleHtml(meta.title || '');
       const featured = Boolean(meta.title && String(meta.title).includes('gold-title')) || parsedTitle.featured;
-      const posts = Array.isArray(threadData.posts) ? threadData.posts : [];
 
-      const authors = {};
-      const normalizedPosts = posts.map((p, idx) => {
-        const number = Number.isFinite(p.number) ? p.number : (idx + 1);
-        const name = String(p.name || '').trim() || '名無しさん';
-        const date = String(p.date || '').trim() || format2chDate(new Date());
-        const body = String(p.body || '');
-
-        const seedId = normalizeIdPart(p.uid || '');
-        const authorKey = seedId ? seedId : `author_${number}`;
-        if (!authors[authorKey]) {
-          authors[authorKey] = {
-            uidMode: seedId ? 'custom' : 'random',
-            uidValue: seedId || '',
-            uidColor: ''
-          };
-        }
-
-        return {
-          number,
-          name,
-          authorKey,
-          date,
-          body,
-          bodyColor: ''
-        };
-      });
-
-      threads.push({
+      return {
         id,
         titleText: parsedTitle.titleText || stripHtml(meta.title || id),
         subtitleText: parsedTitle.subtitleText || '',
         featured,
-        listDate: String(meta.date || normalizedPosts[0]?.date || ''),
-        posts: normalizedPosts,
-        authors
-      });
-    }
+        listDate: String(meta.date || ''),
+        posts: [],
+        authors: {},
+        seedLoaded: false,
+        seedCount: Number.isFinite(meta.count) ? Number(meta.count) : 0,
+        seedSource: 'file'
+      };
+    });
 
     return {
       schemaVersion: STATE_SCHEMA_VERSION,
       dataVersion: DATA_VERSION,
       threads
     };
+  }
+
+  normalizeThreadPostsAndAuthors(rawPosts) {
+    const posts = Array.isArray(rawPosts) ? rawPosts : [];
+    const authors = {};
+    const normalizedPosts = posts.map((p, idx) => {
+      const number = Number.isFinite(p.number) ? p.number : (idx + 1);
+      const name = String(p.name || '').trim() || '名無しさん';
+      const date = String(p.date || '').trim() || format2chDate(new Date());
+      const body = String(p.body || '');
+
+      const seedId = normalizeIdPart(p.uid || '');
+      const authorKey = seedId ? seedId : `author_${number}`;
+      if (!authors[authorKey]) {
+        authors[authorKey] = {
+          uidMode: seedId ? 'custom' : 'random',
+          uidValue: seedId || '',
+          uidColor: ''
+        };
+      }
+
+      return {
+        number,
+        name,
+        authorKey,
+        date,
+        body,
+        bodyColor: ''
+      };
+    });
+
+    return { posts: normalizedPosts, authors };
+  }
+
+  async ensureThreadSeeded(threadId) {
+    const id = normalizeThreadIdentifier(threadId);
+    if (!id) return null;
+    const thread = this.getThread(id);
+    if (!thread) return null;
+    if (thread.seedSource !== 'file') {
+      thread.seedLoaded = true;
+      return thread;
+    }
+    if (thread.seedLoaded) return thread;
+
+    if (this._threadSeedPromises.has(id)) {
+      await this._threadSeedPromises.get(id);
+      return this.getThread(id);
+    }
+
+    const loadPromise = (async () => {
+      const threadData = await this.evalThreadScript(`threads/${id}.js`, 'setThreadData');
+      const parsedTitle = parseTitleHtml(threadData.title || thread.titleText || id);
+      const normalized = this.normalizeThreadPostsAndAuthors(threadData.posts || []);
+
+      thread.titleText = thread.titleText || parsedTitle.titleText || id;
+      thread.subtitleText = thread.subtitleText || parsedTitle.subtitleText || '';
+      thread.featured = Boolean(thread.featured || parsedTitle.featured);
+      thread.posts = this.mergePosts(normalized.posts, thread.posts);
+      thread.authors = { ...normalized.authors, ...(thread.authors || {}) };
+      thread.seedLoaded = true;
+      thread.seedCount = thread.posts.length;
+      if (!thread.listDate) {
+        thread.listDate = thread.posts.length ? thread.posts[thread.posts.length - 1].date : '';
+      }
+    })();
+
+    this._threadSeedPromises.set(id, loadPromise);
+    try {
+      await loadPromise;
+    } finally {
+      this._threadSeedPromises.delete(id);
+    }
+
+    return this.getThread(id);
   }
 
   bindEvents() {
@@ -683,7 +767,10 @@ class App {
 
   render() {
     if (this.mode === 'thread') {
-      this.renderThread(this.currentThreadId);
+      this.renderThread(this.currentThreadId).catch((e) => {
+        console.error(e);
+        this.container.innerHTML = `<p style="color:red">Error: ${escapeHtml(e.message || String(e))}</p>`;
+      });
     } else {
       this.renderIndex();
     }
@@ -701,7 +788,8 @@ class App {
         ? `<div class="thread-list-subtitle" style="margin-top:2px;color:#777;font-size:12px;line-height:1.35;">${escapeHtml(t.subtitleText)}</div>`
         : '';
 
-      const count = Array.isArray(t.posts) ? t.posts.length : 0;
+      const postCount = Array.isArray(t.posts) ? t.posts.length : 0;
+      const count = postCount > 0 ? postCount : (t.seedLoaded ? postCount : Number(t.seedCount || 0));
       const date = this.convertToJapaneseDate(t.listDate || '');
 
       const editActions = isEdit
@@ -781,8 +869,8 @@ class App {
     document.title = '所长的谣言板';
   }
 
-  renderThread(threadId) {
-    const thread = this.getThread(threadId);
+  async renderThread(threadId) {
+    let thread = this.getThread(threadId);
     const isEdit = this.uiMode === 'edit';
 
     if (!thread) {
@@ -798,6 +886,17 @@ class App {
       `;
       document.title = 'Thread not found';
       return;
+    }
+
+    if (thread.seedSource === 'file' && !thread.seedLoaded) {
+      this.container.innerHTML = `<p style="padding:10px;color:#666;">Loading thread...</p>`;
+      await this.ensureThreadSeeded(threadId);
+      thread = this.getThread(threadId);
+      if (!thread) {
+        this.container.innerHTML = `<p style="padding:10px;color:#666;">Thread not found: ${escapeHtml(threadId)}</p>`;
+        document.title = 'Thread not found';
+        return;
+      }
     }
 
     const titleHtml = (() => {
@@ -1147,7 +1246,10 @@ class App {
         featured,
         listDate: format2chDate(new Date()),
         posts: [],
-        authors: {}
+        authors: {},
+        seedLoaded: true,
+        seedCount: 0,
+        seedSource: 'local'
       });
       this.saveState();
       this.resetThreadForm();
