@@ -7,7 +7,7 @@ const APP_STATE_DB_NAME = 'Tukuyomi2chDB';
 const APP_STATE_DB_VERSION = 1;
 const APP_STATE_STORE = 'appState';
 const APP_STATE_RECORD_KEY = 'current';
-const APP_BUILD_TAG = 'b20260208-8';
+const APP_BUILD_TAG = 'b20260208-12';
 
 function escapeHtml(text) {
   return String(text || '')
@@ -1385,5 +1385,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.container').innerHTML = `<p style="color:red">Error: ${escapeHtml(e.message || String(e))}</p>`;
   });
 });
+
 
 
