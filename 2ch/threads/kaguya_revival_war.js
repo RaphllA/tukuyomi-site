@@ -1,5 +1,5 @@
-app.setThreadData({
-    "title": "【激震】かぐや復活？！いきなりいろP・ヤチヨと3人コラボライブ。集金確定か？<div class=\"title-subtitle\">kaguya复活，一上来就是和彩P八千代三人联动live，捞钱预定？</div>",
+﻿app.setThreadData({
+    "title": "【激震】かぐや復活？！いきなりいろP・ヤチヨと3人コラボライブ。集金確定か？<div class=\"title-subtitle\">【激震】kaguya复活，一上来就是和彩P八千代三人联动live，捞钱预定？</div>",
     "posts": [
         {
             "number": 1,
@@ -241,4 +241,5 @@ app.setThreadData({
         }
     ]
 });
+
 

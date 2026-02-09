@@ -7,7 +7,7 @@ const APP_STATE_DB_NAME = 'Tukuyomi2chDB';
 const APP_STATE_DB_VERSION = 1;
 const APP_STATE_STORE = 'appState';
 const APP_STATE_RECORD_KEY = 'current';
-const APP_BUILD_TAG = 'b20260210-2';
+const APP_BUILD_TAG = 'b20260210-3';
 
 function escapeHtml(text) {
   return String(text || '')

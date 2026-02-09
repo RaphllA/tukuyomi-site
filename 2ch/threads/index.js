@@ -1,4 +1,4 @@
-app.setThreadList({
+﻿app.setThreadList({
     "threads": [
         {
             "id": "intro",
@@ -62,7 +62,7 @@ app.setThreadList({
         },
         {
             "id": "kaguya_revival_war",
-            "title": "【激震】かぐや復活？！いきなりいろP・ヤチヨと3人コラボライブ。集金確定か？<div class=\"title-subtitle\">kaguya复活，一上来就是和彩P八千代三人联动live，捞钱预定？</div>",
+            "title": "【激震】かぐや復活？！いきなりいろP・ヤチヨと3人コラボライブ。集金確定か？<div class=\"title-subtitle\">【激震】kaguya复活，一上来就是和彩P八千代三人联动live，捞钱预定？</div>",
             "count": 34,
             "date": "2040/09/12(木) 21:05:00"
         },
@@ -74,9 +74,10 @@ app.setThreadList({
         },
         {
             "id": "sakayori_lab_rumors",
-            "title": "【質問】酒寄研究所ってどう見てる？<div class=\"title-subtitle\">大家对酒寄研究所是怎么看的？</div>",
+            "title": "【興味】酒寄研究所ってどう見てる？<div class=\"title-subtitle\">【好奇】大家对酒寄研究所是怎么看的？</div>",
             "count": 27,
             "date": "2041/09/10(火) 19:15:32"
         }
     ]
 });
+

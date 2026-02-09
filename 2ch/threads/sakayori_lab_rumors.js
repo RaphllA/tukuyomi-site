@@ -1,5 +1,5 @@
 app.setThreadData({
-    "title": "【質問】酒寄研究所ってどう見てる？<div class=\"title-subtitle\">大家对酒寄研究所是怎么看的？</div>",
+    "title": "【興味】酒寄研究所ってどう見てる？<div class=\"title-subtitle\">【好奇】大家对酒寄研究所是怎么看的？</div>",
     "posts": [
         {
             "number": 1,
