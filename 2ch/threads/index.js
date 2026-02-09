@@ -71,6 +71,12 @@ app.setThreadList({
             "title": "【党争】結局お前ら今どっちのCP推してるん？ycir？irkg？<div class=\"title-subtitle\">【党争】结果你们现在到底推哪对CP？ycir？irkg？</div>",
             "count": 11,
             "date": "2041/08/20(火) 21:15:32"
+        },
+        {
+            "id": "sakayori_lab_rumors",
+            "title": "【質問】酒寄研究所ってどう見てる？<div class=\"title-subtitle\">大家对酒寄研究所是怎么看的？</div>",
+            "count": 27,
+            "date": "2041/09/10(火) 19:15:32"
         }
     ]
 });
