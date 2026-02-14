@@ -83,6 +83,12 @@
             "title": "【内部】SKY研内部議論スレ<div class=\"title-subtitle\">【内部】SKY研（酒寄研）内部讨论帖</div>",
             "count": 10,
             "date": "2041/10/08(水) 18:22:05"
+        },
+        {
+            "id": "valentine_couple_privilege",
+            "title": "【悲報】遊園地スタッフだけど、バレンタインのカップル特典で修羅場になったんだが<div class=\"title-subtitle\">【悲报】我是游乐园的工作人员，情人节的情侣特典领取变成了修罗场</div>",
+            "count": 21,
+            "date": "2042/02/14(土) 14:32:05"
         }
     ]
 });
